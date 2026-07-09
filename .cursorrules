@@ -1,0 +1,185 @@
+# Cursor Rules for Oceanmapping Project
+
+## MANDATORY: Unit Test Structure
+
+### Core Rule: Test-Driven Development
+**CRITICAL**: When creating ANY new code (functions, classes, modules, components), you MUST create corresponding unit tests following this structure:
+
+### Test File Requirements
+
+1. **Colocated Tests**
+   - Test files MUST be placed in the same directory as the source file
+   - Test files MUST use the `.test.js` naming convention
+   - Example: `calculator.js` → `calculator.test.js`
+
+2. **Test Structure Template**
+   ```javascript
+   import { describe, it, expect } from 'vitest';
+   import { functionName } from './moduleName.js';
+
+   describe('ModuleName', () => {
+     describe('functionName', () => {
+       it('should [specific behavior]', () => {
+         // Arrange
+         const input = 'test data';
+         
+         // Act
+         const result = functionName(input);
+         
+         // Assert
+         expect(result).toBe(expectedValue);
+       });
+     });
+   });
+   ```
+
+3. **Required Test Coverage**
+   - ✅ Happy path (normal/expected input)
+   - ✅ Edge cases (boundary values, empty inputs, null/undefined)
+   - ✅ Error cases (invalid input, exceptions)
+   - ✅ Different data types (if applicable)
+   - ✅ Minimum 80% code coverage for new code
+
+4. **Test Naming Convention**
+   - Use descriptive test names: `it('should do something when condition')`
+   - Group related tests with `describe` blocks
+   - Test names should read like documentation
+
+### Workflow for Creating New Code
+
+```
+1. Create the source file (e.g., src/ocean/tides.js)
+2. Create the test file (e.g., src/ocean/tides.test.js)
+3. Write test cases FIRST (TDD approach preferred)
+4. Implement the functionality
+5. Run tests: npm test
+6. Ensure all tests pass before committing
+7. Check coverage: npm run test:coverage
+```
+
+### Examples of Required Test Patterns
+
+#### For Pure Functions
+```javascript
+describe('calculateTideHeight', () => {
+  it('should calculate high tide correctly', () => {
+    expect(calculateTideHeight(12, 'high')).toBe(expectedValue);
+  });
+  
+  it('should handle edge case of midnight', () => {
+    expect(calculateTideHeight(0, 'high')).toBeDefined();
+  });
+  
+  it('should throw error for invalid time', () => {
+    expect(() => calculateTideHeight(-1, 'high')).toThrow();
+  });
+});
+```
+
+#### For Classes
+```javascript
+describe('TideTracker', () => {
+  it('should initialize with default values', () => {
+    const tracker = new TideTracker();
+    expect(tracker.location).toBeDefined();
+  });
+  
+  it('should update location', () => {
+    const tracker = new TideTracker();
+    tracker.setLocation(40.7128, -74.006);
+    expect(tracker.location.lat).toBe(40.7128);
+  });
+});
+```
+
+#### For Async Functions
+```javascript
+describe('fetchTideData', () => {
+  it('should fetch tide data successfully', async () => {
+    const data = await fetchTideData('location');
+    expect(data).toBeDefined();
+    expect(data.tides).toBeInstanceOf(Array);
+  });
+  
+  it('should handle fetch errors', async () => {
+    await expect(fetchTideData('invalid')).rejects.toThrow();
+  });
+});
+```
+
+### Testing Best Practices
+
+1. **Arrange-Act-Assert Pattern**
+   - Arrange: Set up test data and conditions
+   - Act: Execute the function/method being tested
+   - Assert: Verify the results
+
+2. **Test Independence**
+   - Each test should be independent
+   - Tests should not rely on execution order
+   - Use `beforeEach`/`afterEach` for setup/teardown
+
+3. **Meaningful Assertions**
+   - Use specific matchers: `toBe`, `toEqual`, `toBeCloseTo`, `toThrow`
+   - Avoid testing implementation details
+   - Focus on behavior and outputs
+
+4. **Mock External Dependencies**
+   - Mock API calls, database operations
+   - Mock file system operations
+   - Keep unit tests fast and isolated
+
+### Code Review Checklist
+
+Before committing new code, verify:
+- [ ] Test file exists and follows naming convention
+- [ ] All new functions/methods have tests
+- [ ] Tests cover happy path, edge cases, and errors
+- [ ] All tests pass: `npm test -- --run`
+- [ ] Coverage meets minimum 80%: `npm run test:coverage`
+- [ ] Tests are independent and reproducible
+- [ ] Test names are descriptive and clear
+
+### Enforcement
+
+**Pull requests without corresponding unit tests will be rejected.**
+
+New code without tests is considered incomplete and should not be merged.
+
+### Running Tests
+
+```bash
+# Watch mode (recommended during development)
+npm test
+
+# Single run (for CI/CD)
+npm test -- --run
+
+# With coverage
+npm run test:coverage
+
+# Interactive UI
+npm run test:ui
+
+# Run specific test file
+npm test src/ocean/coordinates.test.js
+```
+
+### Project Testing Standards
+
+- **Framework**: Vitest v4.1+
+- **Configuration**: `vitest.config.js`
+- **Minimum Coverage**: 80% for new code
+- **Test Environment**: Node.js
+- **Assertion Library**: Vitest (built-in expect)
+
+### Additional Requirements
+
+1. **Documentation**: Include JSDoc comments for all public functions
+2. **Error Handling**: All functions must handle errors appropriately
+3. **Type Safety**: Consider adding JSDoc types for better IDE support
+4. **Performance**: Tests should run fast (<100ms per test when possible)
+
+## Summary
+
+**Remember**: Code without tests is incomplete code. Always write tests alongside your implementation.

@@ -2,6 +2,8 @@
 
 A modern ocean mapping application with comprehensive testing using Vitest.
 
+> **🧪 Test-First Development**: This project enforces mandatory unit testing for all code. See [Contributing Guidelines](CONTRIBUTING.md) and [.cursorrules](.cursorrules) for details.
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -119,10 +121,29 @@ The Vitest configuration is in `vitest.config.js`:
 
 ## 🤝 Contributing
 
-1. Write tests for new features
-2. Ensure all tests pass before committing
-3. Maintain high code coverage
-4. Follow existing code style
+**⚠️ IMPORTANT: All new code MUST include unit tests!**
+
+Please read our [Contributing Guidelines](CONTRIBUTING.md) for detailed information on:
+- Testing requirements (mandatory unit tests for all code)
+- Code standards and style guide
+- Pull request process
+- Development workflow
+
+### Quick Contribution Guide
+
+1. **Fork & Clone** the repository
+2. **Install dependencies**: `npm install`
+3. **Create feature branch**: `git checkout -b feature/your-feature`
+4. **Write tests first** (Test-Driven Development)
+5. **Implement your feature**
+6. **Run tests**: `npm test -- --run` (must pass ✅)
+7. **Check coverage**: `npm run test:coverage` (minimum 80%)
+8. **Commit & Push** with clear messages
+9. **Create Pull Request**
+
+See [.cursorrules](.cursorrules) for AI-assisted development guidelines.
+
+**Note**: Pull requests without tests will not be accepted.
 
 ## 📄 License
 
