@@ -1,5 +1,32 @@
 # Cursor AI Rules for Development
 
+## Project Context
+
+### ALWAYS READ DEVELOPMENT LOG FIRST
+Before starting any work on a project:
+
+1. **Check for DEVELOPMENT_LOG.md**
+   - Read it completely to understand project context
+   - Review what's been built
+   - Check current status
+   - Understand the tech stack
+   - See what features exist
+
+2. **Use Log for Context**
+   - Avoid recreating existing features
+   - Maintain consistency with previous work
+   - Understand design decisions
+   - Know what APIs/services are configured
+   - See git commit history
+
+3. **Update Log After Changes**
+   - Add new features to the log
+   - Document new commits
+   - Update statistics
+   - Maintain accuracy
+
+**Why**: The development log provides complete project context and prevents duplicate work.
+
 ## General Coding Standards
 - Use meaningful and descriptive variable/function names
 - Limit functions to 50 lines
