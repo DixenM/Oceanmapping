@@ -140,11 +140,9 @@ export const fetchTideData = async (lat, lon, stationName = 'Unknown') => {
   
   try {
     // ========================================
-    // REAL API INTEGRATION (Commented out)
+    // REAL API INTEGRATION (Active)
     // ========================================
-    // Uncomment this block when you have a WorldTides API key
-    /*
-    // Only try real API if we have a valid key
+    // Try real API if we have a valid key
     if (API_KEY && API_KEY !== 'demo-key') {
       const now = new Date()
       const start = Math.floor(now.getTime() / 1000)
@@ -155,52 +153,64 @@ export const fetchTideData = async (lat, lon, stationName = 'Unknown') => {
         lat: lat.toString(),
         lon: lon.toString(),
         start: start.toString(),
-        length: '172800',
+        length: '172800', // 48 hours in seconds
         datum: 'MSL',
         extremes: 'true',
         heights: 'true',
-        step: '3600'
+        step: '3600' // Data point every hour
       })
       
       const response = await fetch(`${API_BASE_URL}?${params}`)
       
       if (!response.ok) {
+        console.warn(`API error: ${response.status}, falling back to mock data`)
         throw new Error(`API error: ${response.status}`)
       }
       
       const data = await response.json()
+      
+      // Check if API returned valid data
+      if (!data.heights || data.heights.length === 0) {
+        console.warn('No tide data returned from API, using mock data')
+        throw new Error('No tide data available')
+      }
       
       // Transform API response to our format
       return {
         station: stationName,
         coordinates: { lat, lon },
         currentTide: {
-          height: data.heights?.[0]?.height || 0,
-          time: data.heights?.[0]?.dt || now.toISOString(),
-          status: data.heights?.[1]?.height > data.heights?.[0]?.height ? 'rising' : 'falling'
+          height: parseFloat((data.heights[0]?.height || 0).toFixed(2)),
+          time: data.heights[0]?.dt || now.toISOString(),
+          status: data.heights[1]?.height > data.heights[0]?.height ? 'rising' : 'falling'
         },
-        nextTides: data.extremes?.map(ext => ({
+        nextTides: (data.extremes || []).map(ext => ({
           time: ext.dt,
-          height: ext.height,
-          type: ext.type
-        })) || [],
-        predictions: data.heights?.map(h => ({
+          height: parseFloat(ext.height.toFixed(2)),
+          type: ext.type === 'High' ? 'high' : 'low'
+        })).slice(0, 6),
+        predictions: (data.heights || []).map(h => ({
           time: h.dt,
-          height: h.height,
+          height: parseFloat(h.height.toFixed(2)),
           type: 'normal'
-        })) || [],
+        })),
         unit: 'meters',
         datum: data.datum || 'MSL',
         source: 'worldtides',
-        lastUpdated: now.toISOString()
+        lastUpdated: now.toISOString(),
+        tideRange: {
+          min: Math.min(...(data.heights || []).map(h => h.height)),
+          max: Math.max(...(data.heights || []).map(h => h.height)),
+          average: (data.heights || []).reduce((sum, h) => sum + h.height, 0) / (data.heights || []).length
+        }
       }
     }
-    */
     
     // ========================================
-    // MOCK DATA (Currently active)
+    // MOCK DATA (Fallback)
     // ========================================
-    // Using realistic mock data for demo purposes
+    // Using realistic mock data as fallback
+    console.info('Using mock tide data (no API key or API unavailable)')
     return generateMockTideData(stationName, lat, lon)
     
   } catch (error) {
