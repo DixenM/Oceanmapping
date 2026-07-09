@@ -1,45 +1,29 @@
-# 🌊 Denmark Tide Map
+# 🌊 Danish Tide Tracker
 
-A mobile-friendly Progressive Web App (PWA) that displays real-time ocean tide information along the Danish coast. Built with React, Leaflet, and modern web technologies.
-
-![Denmark Tide Map](./docs/screenshot.png)
+A modern, interactive web application for tracking tides at Danish coastal stations. Built with React, TypeScript, and Leaflet.
 
 ## ✨ Features
 
-- 🗺️ **Interactive Map**: Full-screen Leaflet map centered on Denmark with OpenStreetMap tiles
-- 📍 **13 Tide Stations**: Major monitoring locations including Copenhagen, Esbjerg, Aarhus, Skagen, Frederikshavn, Hirtshals, Hornbæk, and more
-- 📊 **Tide Predictions**: Current tide levels, high/low tide times, and 24/48-hour predictions with interactive charts
-- 🔍 **Smart Search**: Quick search with "fly to" animation - search by name, region, or description
-- 📍 **Current Location**: Built-in geolocation to find nearest tide stations
-- 🌙 **Dark Theme**: Ocean-inspired dark UI optimized for outdoor visibility
-- 📱 **Mobile-First**: Responsive bottom sheet design with drag handle and backdrop
-- ⚡ **PWA**: Installable on mobile devices with offline support
-- 🎨 **Modern UI**: Clean interface built with Tailwind CSS
-- 📈 **Toggle Charts**: Switch between 24-hour and 48-hour tide predictions
+- 🗺️ **Interactive Map**: Browse 15 Danish coastal tide stations on an interactive map
+- 🔍 **Smart Search**: Search by station name or city (Copenhagen, Esbjerg, Aalborg, etc.) with autocomplete
+- 📍 **Location Finder**: Automatically find the nearest tide station to your current location using GPS
+- 📊 **Real-time Tide Data**: Get current tide heights and upcoming high/low tide predictions
+- 🎨 **Status Indicators**: Visual indicators for tide status (rising, falling, high, low) with colors and icons
+- 📱 **Mobile-Friendly**: Responsive design optimized for all devices
+- 🎯 **Station List**: Browse all stations organized by region with slide-out panel
 
-## 🚀 Tech Stack
-
-- **React 18** - UI framework
-- **Vite** - Build tool and dev server
-- **React-Leaflet** - Interactive maps
-- **TanStack Query** - Data fetching and caching
-- **Recharts** - Tide prediction charts
-- **Tailwind CSS** - Styling
-- **Lucide React** - Icons
-- **Vite PWA Plugin** - Progressive Web App features
-
-## 📦 Installation
+## 🚀 Getting Started
 
 ### Prerequisites
 
 - Node.js 18+ and npm
 
-### Setup
+### Installation
 
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd workspace
+cd oceanmapping
 ```
 
 2. Install dependencies:
@@ -47,210 +31,204 @@ cd workspace
 npm install
 ```
 
-3. Create environment file:
-```bash
-cp .env.example .env
-```
+3. Set up your WorldTides API key:
+   - Get a free API key from [WorldTides.info](https://www.worldtides.info/)
+   - Copy `.env.example` to `.env`:
+     ```bash
+     cp .env.example .env
+     ```
+   - Add your API key to `.env`:
+     ```
+     VITE_WORLDTIDES_API_KEY=your_api_key_here
+     ```
 
-4. (Optional) Add your WorldTides API key to `.env`:
-```
-VITE_TIDE_API_KEY=your_api_key_here
-```
-
-> **Note**: The app works with mock data by default. For production use, get a free API key from [WorldTides](https://www.worldtides.info/developer).
-
-## 🛠️ Development
-
-Start the development server:
-
+4. Start the development server:
 ```bash
 npm run dev
 ```
 
-The app will be available at `http://localhost:5173`
+5. Open your browser to `http://localhost:3000`
 
-## 🏗️ Build
-
-Create a production build:
+## 🏗️ Building for Production
 
 ```bash
 npm run build
-```
-
-Preview the production build:
-
-```bash
 npm run preview
 ```
 
-## 📱 PWA Installation
+## 🛠️ Tech Stack
 
-### Desktop
-1. Visit the app in Chrome, Edge, or another PWA-compatible browser
-2. Click the install icon in the address bar
-3. Follow the prompts to install
+- **React 18** - UI framework
+- **TypeScript** - Type safety and better developer experience
+- **Vite** - Build tool and dev server
+- **Leaflet** - Interactive maps
+- **React Leaflet** - React components for Leaflet
+- **WorldTides API** - Real-time tide data
 
-### Mobile
-1. Open the app in Safari (iOS) or Chrome (Android)
-2. Tap the share/menu button
-3. Select "Add to Home Screen"
-4. Confirm installation
+## 📍 Covered Stations
 
-## 🗺️ Tide Stations
+The app includes 15 Danish coastal stations with accurate coordinates:
 
-The app currently tracks 13 tide stations across Denmark:
+### Zealand
+- Copenhagen (København Havnegade)
+- Helsingør
+- Korsør
+- Gedser
 
-| Station | Region | Type |
-|---------|--------|------|
-| Copenhagen (København) | Zealand | Major |
-| Esbjerg | Jutland | Major |
-| Aarhus | Jutland | Major |
-| Skagen | Jutland | Major |
-| Aalborg | Jutland | Major |
-| Frederikshavn | Jutland | Major |
-| Hirtshals | Jutland | Major |
-| Helsingør | Zealand | Major |
-| Hornbæk | Zealand | Secondary |
-| Korsør | Zealand | Secondary |
-| Gedser | Zealand | Secondary |
-| Fredericia | Jutland | Secondary |
-| Rønne | Bornholm | Secondary |
+### Jutland
+- Esbjerg Havn
+- Aalborg
+- Aarhus Havn
+- Skagen Havn
+- Frederikshavn
+- Hirtshals
+- Thyborøn
+- Rømø
+
+### Funen
+- Odense Fjord
+- Svendborg
+
+### Bornholm
+- Rønne
+
+## 🎯 Usage
+
+1. **Search for a Station**: Use the search bar at the top to find stations by name or city
+2. **Find Nearest Station**: Click the location button (📍) to find the closest station to you
+3. **View Tide Info**: Click any marker on the map or select from the station list
+4. **Check Status**: See if the tide is currently rising, falling, high, or low with color-coded indicators:
+   - 🔴 **Low Tide** (red)
+   - 🔵 **Rising** (blue)
+   - 🟢 **High Tide** (green)
+   - 🟠 **Falling** (orange)
+
+## 📱 Mobile Experience
+
+The app is fully optimized for mobile devices with:
+- Touch-friendly controls (56-64px touch targets)
+- Responsive layout that adapts to screen size
+- Bottom sheet for station list on mobile
+- Full-screen tide information popups
+- Smooth animations and transitions
+
+## 🔧 Development
+
+```bash
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+
+# Run linter
+npm run lint
+```
 
 ## 📂 Project Structure
 
 ```
 workspace/
 ├── public/              # Static assets
-│   ├── manifest.json    # PWA manifest
-│   └── vite.svg        # App icon
+│   └── wave.svg        # App icon
 ├── src/
 │   ├── components/      # React components
-│   │   ├── Map.jsx            # Main map component
-│   │   ├── StationMarker.jsx  # Tide station markers
-│   │   ├── TideCard.jsx       # Tide information card
-│   │   ├── TideChart.jsx      # Prediction chart
-│   │   ├── SearchBar.jsx      # Station search
-│   │   ├── Header.jsx         # App header
-│   │   └── InfoModal.jsx      # Information modal
-│   ├── services/        # API services
-│   │   └── tideService.js     # Tide data fetching
+│   │   ├── SearchBar.tsx       # Smart search with autocomplete
+│   │   ├── LocationButton.tsx  # GPS location finder
+│   │   ├── StationList.tsx     # Station list panel
+│   │   └── TideInfoPopup.tsx   # Tide information display
 │   ├── data/            # Static data
-│   │   └── danishStations.js  # Station coordinates
-│   ├── App.jsx          # Main app component
-│   ├── main.jsx         # App entry point
-│   └── index.css        # Global styles
+│   │   └── stations.ts         # 15 Danish tide stations
+│   ├── services/        # API services
+│   │   └── tideApi.ts          # WorldTides API integration
+│   ├── types/           # TypeScript types
+│   │   └── index.ts            # Type definitions
+│   ├── utils/           # Utility functions
+│   │   └── helpers.ts          # Helper functions
+│   ├── styles/          # CSS modules
+│   │   ├── App.css
+│   │   ├── SearchBar.css
+│   │   ├── LocationButton.css
+│   │   ├── StationList.css
+│   │   ├── TideInfoPopup.css
+│   │   └── index.css
+│   ├── App.tsx          # Main app component
+│   ├── main.tsx         # App entry point
+│   └── vite-env.d.ts    # Vite type definitions
 ├── index.html           # HTML template
-├── vite.config.js       # Vite configuration
-├── tailwind.config.js   # Tailwind configuration
+├── vite.config.ts       # Vite configuration
+├── tsconfig.json        # TypeScript configuration
 └── package.json         # Dependencies
 ```
+
+## 🎨 Features in Detail
+
+### Search Bar
+- Real-time autocomplete suggestions
+- Search by station name, city, or region
+- Fly-to animation on selection
+- Auto-opens tide information popup
+- Clear button for quick reset
+
+### Location Finder
+- Uses browser geolocation API
+- Calculates nearest station using haversine formula
+- Error handling for denied permissions
+- Loading state indicator
+
+### Station List
+- Organized by region
+- Slide-out panel (bottom sheet on mobile, side panel on desktop)
+- Touch-friendly list items
+- Station count display
+- Smooth animations
+
+### Tide Information
+- Current tide height
+- Tide status with color-coded indicators
+- Next 6 high/low tide predictions
+- Formatted times and heights
+- Loading and error states
 
 ## 🔧 Configuration
 
 ### API Integration
 
-To use real tide data instead of mock data:
+The app uses the WorldTides API for real-time tide data. To configure:
 
-1. Get a WorldTides API key: https://www.worldtides.info/developer
-2. Add it to `.env`:
-   ```
-   VITE_TIDE_API_KEY=your_key_here
-   ```
-3. Open `src/services/tideService.js` and uncomment the real API code (search for "REAL API INTEGRATION")
-
-The mock data is quite realistic and suitable for development and demos. It simulates:
-- Semi-diurnal tides (2 high tides, 2 low tides per day)
-- Different tide ranges for North Sea vs Baltic Sea
-- Proper tide cycles (~12.4 hours between high tides)
-- Realistic heights and timing
+1. Get a free API key from [WorldTides](https://www.worldtides.info/developer)
+2. Add it to your `.env` file
+3. The app will automatically use it for all API calls
 
 ### Adding New Stations
 
-Edit `src/data/danishStations.js`:
+Edit `src/data/stations.ts` to add new stations:
 
-```javascript
+```typescript
 {
   id: 'station-id',
   name: 'Station Name',
-  nameLocal: 'Lokalt Navn',
-  lat: 55.1234,
-  lon: 10.5678,
-  description: 'Description',
-  type: 'major', // or 'secondary'
-  region: 'Region'
+  latitude: 55.1234,
+  longitude: 10.5678,
+  city: 'City Name',
+  region: 'Region Name'
 }
 ```
 
-## 🎨 Customization
+## 📄 License
 
-### Theme Colors
-
-Edit `tailwind.config.js` to customize the ocean color palette:
-
-```javascript
-colors: {
-  ocean: {
-    // Customize these values
-    500: '#0ea5e9',
-    600: '#0284c7',
-    // ...
-  }
-}
-```
-
-### Map Settings
-
-Adjust map center and zoom in `src/components/Map.jsx`:
-
-```javascript
-const denmarkCenter = [55.7, 10.5]
-const defaultZoom = 7
-```
-
-## 📊 Data Sources
-
-- **Tide Data**: WorldTides API (optional, uses mock data by default)
-- **Map Tiles**: OpenStreetMap
-- **Station Coordinates**: Danish Meteorological Institute references
+MIT
 
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 📄 License
-
-This project is open source and available under the MIT License.
-
 ## 🙏 Acknowledgments
 
 - OpenStreetMap contributors for map tiles
 - WorldTides for tide prediction API
-- Danish Meteorological Institute for station references
+- Danish coastal monitoring stations
 - The React and Vite communities
-
-## 🐛 Known Issues
-
-- PWA icons are placeholders (need actual PNG icons for production)
-- Using mock tide data by default (real API integration commented out)
-- Service worker caching may need tuning for production
-
-## 🔮 Future Enhancements
-
-- [ ] Real-time weather integration
-- [ ] Sunrise/sunset times
-- [ ] Wave height predictions
-- [ ] Current/flow direction
-- [ ] Historical tide data
-- [ ] Favorite stations
-- [ ] Push notifications for tide alerts
-- [ ] Multi-language support (Danish/English)
-- [ ] User location detection
-- [ ] More stations coverage
-
-## 📞 Support
-
-For questions or issues, please open an issue on GitHub.
-
----
-
-Built with ❤️ for coastal enthusiasts in Denmark

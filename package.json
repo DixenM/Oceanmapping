@@ -1,36 +1,32 @@
 {
-  "name": "denmark-tide-map",
+  "name": "oceanmapping-tide-tracker",
+  "version": "1.0.0",
+  "description": "Danish tide tracking application with interactive map",
   "private": true,
-  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint ."
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-leaflet": "^4.2.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "leaflet": "^1.9.4",
-    "@tanstack/react-query": "^5.62.0",
-    "recharts": "^2.15.0",
-    "lucide-react": "^0.462.0"
+    "react-leaflet": "^4.2.1"
   },
   "devDependencies": {
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^6.0.1",
-    "eslint": "^9.15.0",
-    "eslint-plugin-react": "^7.37.2",
-    "eslint-plugin-react-hooks": "^5.0.0",
-    "eslint-plugin-react-refresh": "^0.4.14",
-    "tailwindcss": "^3.4.17",
-    "@tailwindcss/vite": "^4.0.0-beta.9",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.49",
-    "vite-plugin-pwa": "^0.21.1"
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@types/leaflet": "^1.9.8",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.55.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8"
   }
 }
