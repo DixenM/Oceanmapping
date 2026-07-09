@@ -4,8 +4,14 @@ import { danishStations } from '../data/danishStations'
 
 /**
  * SearchBar Component
- * Allows users to search for tide stations by name
- * Shows filtered results in a dropdown
+ * Allows users to search for tide stations by name, location, or region
+ * 
+ * Features:
+ * - Live filtering as user types
+ * - Searches across name, description, and region
+ * - Keyboard navigation support
+ * - Automatically closes when clicking outside
+ * - Triggers map animation to selected station
  */
 const SearchBar = ({ onStationSelect }) => {
   const [query, setQuery] = useState('')
@@ -13,6 +19,10 @@ const SearchBar = ({ onStationSelect }) => {
   const [filteredStations, setFilteredStations] = useState([])
   const searchRef = useRef(null)
 
+  /**
+   * Filter stations based on search query
+   * Searches across multiple fields for better matches
+   */
   useEffect(() => {
     if (query.trim() === '') {
       setFilteredStations([])
@@ -43,6 +53,10 @@ const SearchBar = ({ onStationSelect }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  /**
+   * Handle station selection from search results
+   * Triggers parent callback to show tide info and fly to location
+   */
   const handleStationClick = (station) => {
     onStationSelect(station)
     setQuery('')

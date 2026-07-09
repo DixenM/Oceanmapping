@@ -1,7 +1,16 @@
 /**
  * Danish Tide Stations
  * Major tide monitoring locations along the Danish coast
- * Coordinates and metadata for tide stations
+ * 
+ * Coordinates are based on real harbor and tide station locations.
+ * Each station includes:
+ * - id: Unique identifier
+ * - name: English name
+ * - nameLocal: Danish name
+ * - lat/lon: Precise coordinates
+ * - description: Location details
+ * - type: 'major' for primary stations, 'secondary' for supporting stations
+ * - region: Geographic region in Denmark
  */
 
 export const danishStations = [
@@ -56,6 +65,46 @@ export const danishStations = [
     region: 'Jutland'
   },
   {
+    id: 'frederikshavn',
+    name: 'Frederikshavn',
+    nameLocal: 'Frederikshavn',
+    lat: 57.4377,
+    lon: 10.5360,
+    description: 'Ferry port, Kattegat coast',
+    type: 'major',
+    region: 'Jutland'
+  },
+  {
+    id: 'hirtshals',
+    name: 'Hirtshals',
+    nameLocal: 'Hirtshals',
+    lat: 57.5940,
+    lon: 9.9617,
+    description: 'North Sea fishing port',
+    type: 'major',
+    region: 'Jutland'
+  },
+  {
+    id: 'helsingør',
+    name: 'Helsingør',
+    nameLocal: 'Helsingør',
+    lat: 56.0363,
+    lon: 12.6136,
+    description: 'Øresund, near Sweden',
+    type: 'major',
+    region: 'Zealand'
+  },
+  {
+    id: 'hornbaek',
+    name: 'Hornbæk',
+    nameLocal: 'Hornbæk',
+    lat: 56.0942,
+    lon: 12.4572,
+    description: 'Beach town, north Zealand',
+    type: 'secondary',
+    region: 'Zealand'
+  },
+  {
     id: 'korsor',
     name: 'Korsør',
     nameLocal: 'Korsør',
@@ -76,32 +125,12 @@ export const danishStations = [
     region: 'Zealand'
   },
   {
-    id: 'helsingør',
-    name: 'Helsingør',
-    nameLocal: 'Helsingør',
-    lat: 56.0363,
-    lon: 12.6136,
-    description: 'Øresund, near Sweden',
-    type: 'secondary',
-    region: 'Zealand'
-  },
-  {
     id: 'fredericia',
     name: 'Fredericia',
     nameLocal: 'Fredericia',
     lat: 55.5636,
     lon: 9.7520,
     description: 'Little Belt strait',
-    type: 'secondary',
-    region: 'Jutland'
-  },
-  {
-    id: 'hirtshals',
-    name: 'Hirtshals',
-    nameLocal: 'Hirtshals',
-    lat: 57.5940,
-    lon: 9.9617,
-    description: 'North Sea fishing port',
     type: 'secondary',
     region: 'Jutland'
   },

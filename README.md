@@ -7,13 +7,15 @@ A mobile-friendly Progressive Web App (PWA) that displays real-time ocean tide i
 ## ✨ Features
 
 - 🗺️ **Interactive Map**: Full-screen Leaflet map centered on Denmark with OpenStreetMap tiles
-- 📍 **11 Tide Stations**: Major monitoring locations including Copenhagen, Esbjerg, Aarhus, Skagen, and more
-- 📊 **Tide Predictions**: Current tide levels, high/low tide times, and 48-hour predictions with charts
-- 🔍 **Smart Search**: Quick search for tide stations by name, region, or description
+- 📍 **13 Tide Stations**: Major monitoring locations including Copenhagen, Esbjerg, Aarhus, Skagen, Frederikshavn, Hirtshals, Hornbæk, and more
+- 📊 **Tide Predictions**: Current tide levels, high/low tide times, and 24/48-hour predictions with interactive charts
+- 🔍 **Smart Search**: Quick search with "fly to" animation - search by name, region, or description
+- 📍 **Current Location**: Built-in geolocation to find nearest tide stations
 - 🌙 **Dark Theme**: Ocean-inspired dark UI optimized for outdoor visibility
-- 📱 **Mobile-First**: Responsive design with touch-friendly controls
+- 📱 **Mobile-First**: Responsive bottom sheet design with drag handle and backdrop
 - ⚡ **PWA**: Installable on mobile devices with offline support
 - 🎨 **Modern UI**: Clean interface built with Tailwind CSS
+- 📈 **Toggle Charts**: Switch between 24-hour and 48-hour tide predictions
 
 ## 🚀 Tech Stack
 
@@ -96,7 +98,7 @@ npm run preview
 
 ## 🗺️ Tide Stations
 
-The app currently tracks 11 major tide stations across Denmark:
+The app currently tracks 13 tide stations across Denmark:
 
 | Station | Region | Type |
 |---------|--------|------|
@@ -105,11 +107,13 @@ The app currently tracks 11 major tide stations across Denmark:
 | Aarhus | Jutland | Major |
 | Skagen | Jutland | Major |
 | Aalborg | Jutland | Major |
-| Helsingør | Zealand | Secondary |
-| Gedser | Zealand | Secondary |
+| Frederikshavn | Jutland | Major |
+| Hirtshals | Jutland | Major |
+| Helsingør | Zealand | Major |
+| Hornbæk | Zealand | Secondary |
 | Korsør | Zealand | Secondary |
+| Gedser | Zealand | Secondary |
 | Fredericia | Jutland | Secondary |
-| Hirtshals | Jutland | Secondary |
 | Rønne | Bornholm | Secondary |
 
 ## 📂 Project Structure
@@ -129,7 +133,7 @@ workspace/
 │   │   ├── Header.jsx         # App header
 │   │   └── InfoModal.jsx      # Information modal
 │   ├── services/        # API services
-│   │   └── tideApi.js         # Tide data fetching
+│   │   └── tideService.js     # Tide data fetching
 │   ├── data/            # Static data
 │   │   └── danishStations.js  # Station coordinates
 │   ├── App.jsx          # Main app component
@@ -152,7 +156,13 @@ To use real tide data instead of mock data:
    ```
    VITE_TIDE_API_KEY=your_key_here
    ```
-3. Update `src/services/tideApi.js` to enable the real API calls (uncomment the fetch code)
+3. Open `src/services/tideService.js` and uncomment the real API code (search for "REAL API INTEGRATION")
+
+The mock data is quite realistic and suitable for development and demos. It simulates:
+- Semi-diurnal tides (2 high tides, 2 low tides per day)
+- Different tide ranges for North Sea vs Baltic Sea
+- Proper tide cycles (~12.4 hours between high tides)
+- Realistic heights and timing
 
 ### Adding New Stations
 

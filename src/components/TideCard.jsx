@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { X, Waves, TrendingUp, TrendingDown, Clock, MapPin } from 'lucide-react'
-import { fetchTideData } from '../services/tideApi'
+import { fetchTideData } from '../services/tideService'
 import TideChart from './TideChart'
 
 /**
@@ -36,7 +36,17 @@ const TideCard = ({ station, onClose }) => {
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-[1000] md:absolute md:top-4 md:right-4 md:bottom-auto md:left-auto md:w-96">
+      {/* Backdrop for mobile */}
+      <div 
+        className="fixed inset-0 bg-black/40 backdrop-blur-sm md:hidden -z-10"
+        onClick={onClose}
+      />
+      
       <div className="bg-slate-800 rounded-t-2xl md:rounded-2xl shadow-2xl border border-slate-700 max-h-[85vh] md:max-h-[calc(100vh-2rem)] overflow-hidden flex flex-col">
+        {/* Drag handle for mobile */}
+        <div className="flex justify-center pt-2 pb-1 md:hidden">
+          <div className="w-10 h-1 bg-slate-600 rounded-full" />
+        </div>
         {/* Header */}
         <div className="p-4 border-b border-slate-700 flex items-start justify-between">
           <div className="flex-1">
@@ -138,7 +148,7 @@ const TideCard = ({ station, onClose }) => {
               {/* Tide Chart */}
               <div>
                 <div className="text-sm font-semibold text-slate-300 mb-3">
-                  48-Hour Prediction
+                  Tide Height Prediction
                 </div>
                 <div className="bg-slate-900/30 rounded-xl p-3 border border-slate-700/50">
                   <TideChart predictions={tideData.predictions} />
