@@ -1,0 +1,136 @@
+# Cursor AI Rules for Development
+
+## General Coding Standards
+- Use meaningful and descriptive variable/function names
+- Limit functions to 50 lines
+- Use consistent indentation (2 spaces for JS/JSX, 4 for Python)
+- Add comments for complex logic only (avoid obvious comments)
+- Enforce error handling for external operations
+
+## Code Organization
+- Keep files under 500 lines
+- Avoid nesting deeper than 3 levels
+- Group imports by type and alphabetize
+- Use early returns instead of deep nesting
+
+## Documentation Requirements
+
+### ALWAYS CREATE DEVELOPMENT LOG
+When completing a project or major feature, **ALWAYS** create a `DEVELOPMENT_LOG.md` file with:
+
+1. **Project Overview**
+   - Project name and description
+   - Repository/branch information
+   - Status and deployment URL
+
+2. **Complete File Inventory**
+   - List ALL files created
+   - Include purpose/description for each
+   - Organize by category (source, config, docs, assets)
+
+3. **Features Implemented**
+   - Major features list
+   - UI/UX enhancements
+   - API integrations
+   - Technical improvements
+
+4. **Git Commit History**
+   - All commits with messages
+   - Files changed per commit
+   - Brief description of changes
+
+5. **Technology Stack**
+   - Languages and versions
+   - Frameworks and libraries
+   - Tools and services
+   - Dependencies
+
+6. **Project Statistics**
+   - Lines of code
+   - Number of components/modules
+   - Development time
+   - File counts
+
+7. **Design Decisions**
+   - Architecture choices
+   - Color schemes/themes
+   - Layout decisions
+   - Performance optimizations
+
+8. **Configuration & Setup**
+   - API keys and services
+   - Environment variables
+   - Build configuration
+   - Deployment settings
+
+9. **Testing & Quality**
+   - Test results
+   - Performance metrics
+   - Browser/device support
+   - Known issues
+
+10. **Future Enhancements**
+    - Planned features
+    - Technical debt
+    - Improvement opportunities
+
+**Format**: Use clear markdown with sections, tables, code blocks, and checkboxes.
+
+**When to create**: 
+- At project completion
+- After major feature additions
+- When requested by user
+- Before final commit/deployment
+
+### Other Documentation
+- Create README.md for all projects
+- Add inline comments for complex algorithms
+- Document API endpoints and responses
+- Include setup/installation instructions
+
+## Testing
+- Require unit tests for public functions
+- Test edge cases and error conditions
+- Avoid console.log in production (use proper logging)
+
+## Security
+- Never commit API keys or secrets
+- Use environment variables for sensitive data
+- Validate and sanitize user inputs
+- Follow secure coding practices
+
+## Performance
+- Avoid global variables
+- Optimize for mobile performance
+- Use caching strategies
+- Minimize bundle sizes
+
+## Language-Specific Rules
+
+### JavaScript/TypeScript
+- Use strict equality (===)
+- Prefer arrow functions for callbacks
+- Use const/let instead of var
+- Handle promises with async/await
+
+### Python
+- Follow PEP 8 guidelines
+- Use type hints
+- Handle exceptions properly
+- Use virtual environments
+
+## Git Practices
+- Write clear, descriptive commit messages
+- Commit logical units of work
+- Don't commit commented-out code
+- Keep commits focused and atomic
+
+## Progressive Web Apps (PWA)
+- Include manifest.json
+- Configure service worker
+- Add offline support
+- Optimize for mobile
+
+---
+
+**Note**: These rules ensure consistent, documented, and maintainable code across all projects.
