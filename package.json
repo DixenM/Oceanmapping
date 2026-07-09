@@ -1,0 +1,27 @@
+{
+  "name": "oceanmapping",
+  "version": "1.0.0",
+  "description": "Ocean mapping application with comprehensive testing",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DixenM/Oceanmapping.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DixenM/Oceanmapping/issues"
+  },
+  "homepage": "https://github.com/DixenM/Oceanmapping#readme",
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.1.10",
+    "vitest": "^4.1.10"
+  }
+}
