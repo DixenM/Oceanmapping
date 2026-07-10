@@ -33,3 +33,18 @@ export interface FavoriteStation {
   stationId: string
   addedAt: number
 }
+
+export interface DepthPoint {
+  id: string
+  latitude: number
+  longitude: number
+  depth: number
+  location: string
+  minZoom?: number
+}
+
+export interface DepthVisualizationState {
+  isEnabled: boolean
+  showMarkers: boolean
+  currentZoom: number
+}
