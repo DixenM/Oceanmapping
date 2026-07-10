@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { fetchTideData } from './tideApi'
 
 /**
  * Unit tests for tideApi service
@@ -9,10 +10,8 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
  * with real API key should be done manually with `npm run dev`
  */
 
-// Mock global fetch before importing the module
-global.fetch = vi.fn()
-
-import { fetchTideData } from './tideApi'
+// Mock global fetch using Vitest's stubGlobal API
+vi.stubGlobal('fetch', vi.fn())
 
 describe('tideApi', () => {
   beforeEach(() => {
