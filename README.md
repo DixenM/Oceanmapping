@@ -2,9 +2,17 @@
 
 A comprehensive web application combining real-time tide tracking and marine weather forecasting for Danish coastal stations. Built with React, TypeScript, and modern web technologies.
 
+<<<<<<< HEAD
+> **🧪 Test-First Development**: This project enforces mandatory unit testing for all code. See [Contributing Guidelines](CONTRIBUTING.md) and [.cursorrules](.cursorrules) for testing requirements.
+
+## ✨ Features
+
+### 🌊 Marine Weather Overlay
+=======
 ## ✨ Features
 
 ### 🌊 Marine Weather Overlay (NEW!)
+>>>>>>> origin/main
 - **Real-time Marine Weather Data** from Open-Meteo Marine API (free, no API key needed)
 - **Wave Height Visualization** with color-coded markers
 - **Wind Speed & Direction** with compass indicators and directional arrows
@@ -67,6 +75,66 @@ npm run dev
 
 5. Open your browser to `http://localhost:3000`
 
+<<<<<<< HEAD
+## 🧪 Testing
+
+This project uses [Vitest](https://vitest.dev/) for unit testing - a blazing fast test runner built on Vite.
+
+### Running Tests
+
+```bash
+# Run Vitest tests in watch mode
+npm test
+
+# Run tests once
+npm test -- --run
+
+# Run tests with UI (interactive test viewer)
+npm run test:ui
+
+# Run tests with coverage report
+npm run test:coverage
+
+# Run marine weather service test
+npm run test:marine
+```
+
+### Test Structure
+
+Tests are colocated with their source files using the `.test.js` or `.test.ts` naming convention:
+
+```
+src/
+├── utils/
+│   ├── calculator.js
+│   └── calculator.test.js
+├── ocean/
+│   ├── coordinates.js
+│   └── coordinates.test.js
+└── components/
+    ├── SearchBar.tsx
+    └── SearchBar.test.tsx
+```
+
+### Writing Tests
+
+Example test structure:
+
+```javascript
+import { describe, it, expect } from 'vitest';
+import { myFunction } from './myModule.js';
+
+describe('MyModule', () => {
+  it('should do something', () => {
+    expect(myFunction()).toBe(expectedValue);
+  });
+});
+```
+
+**⚠️ IMPORTANT**: All new code must include corresponding unit tests. See `.cursorrules` and `CONTRIBUTING.md` for full testing requirements.
+
+=======
+>>>>>>> origin/main
 ## 🏗️ Building for Production
 
 ```bash
@@ -79,6 +147,10 @@ npm run preview
 - **React 18** - UI framework
 - **TypeScript** - Type safety and developer experience
 - **Vite** - Build tool and dev server
+<<<<<<< HEAD
+- **Vitest** - Unit testing framework
+=======
+>>>>>>> origin/main
 - **Leaflet** - Interactive maps
 - **React Leaflet** - React components for Leaflet
 - **WorldTides API** - Real-time tide data
@@ -172,6 +244,16 @@ oceanmapping/
 │   │   └── tideService.js
 │   ├── types/           # TypeScript types
 │   │   └── index.ts
+<<<<<<< HEAD
+│   ├── utils/           # Utility functions with tests
+│   │   ├── calculator.js
+│   │   ├── calculator.test.js
+│   │   └── helpers.ts
+│   ├── ocean/           # Ocean-specific utilities with tests
+│   │   ├── coordinates.js
+│   │   └── coordinates.test.js
+=======
+>>>>>>> origin/main
 │   ├── styles/          # CSS modules
 │   │   ├── App.css
 │   │   ├── SearchBar.css
@@ -184,6 +266,10 @@ oceanmapping/
 │   └── vite-env.d.ts
 ├── test/                # Test suites
 │   └── testMarineWeatherService.js
+<<<<<<< HEAD
+├── vitest.config.js     # Vitest configuration
+=======
+>>>>>>> origin/main
 ├── index.html
 ├── vite.config.ts
 ├── tsconfig.json
@@ -205,8 +291,16 @@ npm run preview
 # Run linter
 npm run lint
 
+<<<<<<< HEAD
+# Run all tests
+npm test
+
+# Run with coverage
+npm run test:coverage
+=======
 # Run marine weather tests
 npm test
+>>>>>>> origin/main
 ```
 
 ## 📱 Mobile Experience
@@ -261,6 +355,43 @@ The app is fully optimized for mobile devices with:
 - Recommended actions
 - Historical context for conditions
 
+<<<<<<< HEAD
+## 🎯 Testing Best Practices
+
+1. **Test file naming**: Use `.test.js` or `.test.ts` suffix
+2. **Test organization**: Group related tests with `describe` blocks
+3. **Clear descriptions**: Use descriptive test names with `it('should ...')`
+4. **Coverage**: Aim for 80%+ code coverage
+5. **Edge cases**: Test boundary conditions and error states
+
+## 🤝 Contributing
+
+**⚠️ IMPORTANT: All new code MUST include unit tests!**
+
+Please read our [Contributing Guidelines](CONTRIBUTING.md) for detailed information on:
+- Testing requirements (mandatory unit tests for all code)
+- Code standards and style guide
+- Pull request process
+- Development workflow
+
+### Quick Contribution Guide
+
+1. **Fork & Clone** the repository
+2. **Install dependencies**: `npm install`
+3. **Create feature branch**: `git checkout -b feature/your-feature`
+4. **Write tests first** (Test-Driven Development)
+5. **Implement your feature**
+6. **Run tests**: `npm test -- --run` (must pass ✅)
+7. **Check coverage**: `npm run test:coverage` (minimum 80%)
+8. **Commit & Push** with clear messages
+9. **Create Pull Request**
+
+See [.cursorrules](.cursorrules) for AI-assisted development guidelines.
+
+**Note**: Pull requests without tests will not be accepted.
+
+=======
+>>>>>>> origin/main
 ## 🚀 Future Enhancements
 
 - Integration with DMI (Danish Meteorological Institute)
@@ -276,14 +407,21 @@ The app is fully optimized for mobile devices with:
 
 MIT
 
+<<<<<<< HEAD
+=======
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+>>>>>>> origin/main
 ## 🙏 Acknowledgments
 
 - OpenStreetMap contributors for map tiles
 - WorldTides for tide prediction API
 - Open-Meteo for free marine weather API
 - Danish coastal monitoring stations
+<<<<<<< HEAD
+- The React, TypeScript, Vite, and Vitest communities
+=======
 - The React, TypeScript, and Vite communities
+>>>>>>> origin/main
