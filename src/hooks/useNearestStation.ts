@@ -12,6 +12,7 @@ export interface UseNearestStationResult {
   isLoading: boolean
   error: string | null
   requestLocation: () => void
+  clearError: () => void
 }
 
 /**
@@ -55,10 +56,21 @@ export const useNearestStation = (
    * 
    * @returns {void}
    */
+  /**
+   * Clears the current error state
+   * 
+   * Purpose: Allow dismissing error messages
+   * 
+   * @returns {void}
+   */
+  const clearError = (): void => {
+    setError(null)
+  }
+
   const requestLocation = (): void => {
     // Check if Geolocation API is available
     if (!navigator.geolocation) {
-      setError('Geolocation is not supported by your browser')
+      setError('Your browser doesn\'t support location services')
       return
     }
 
@@ -90,13 +102,13 @@ export const useNearestStation = (
         
         switch (geoError.code) {
           case geoError.PERMISSION_DENIED:
-            errorMessage = 'Location permission denied. Please enable location access.'
+            errorMessage = 'Enable location to find nearest station. Check your browser settings and allow location access.'
             break
           case geoError.POSITION_UNAVAILABLE:
-            errorMessage = 'Location information unavailable'
+            errorMessage = 'Your location is temporarily unavailable. Make sure location services are enabled on your device.'
             break
           case geoError.TIMEOUT:
-            errorMessage = 'Location request timed out'
+            errorMessage = 'Location request timed out. Please try again.'
             break
         }
 
@@ -129,7 +141,8 @@ export const useNearestStation = (
     userLocation,
     isLoading,
     error,
-    requestLocation
+    requestLocation,
+    clearError
   }
 
   return oLocationResult
