@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Cursor AI Rules for Oceanmapping Project
 
 ## 🚨 CRITICAL: MANDATORY Unit Test Structure
@@ -58,88 +57,6 @@
 7. Check coverage: npm run test:coverage
 ```
 
-### Examples of Required Test Patterns
-
-#### For Pure Functions
-```javascript
-describe('calculateTideHeight', () => {
-  it('should calculate high tide correctly', () => {
-    expect(calculateTideHeight(12, 'high')).toBe(expectedValue);
-  });
-  
-  it('should handle edge case of midnight', () => {
-    expect(calculateTideHeight(0, 'high')).toBeDefined();
-  });
-  
-  it('should throw error for invalid time', () => {
-    expect(() => calculateTideHeight(-1, 'high')).toThrow();
-  });
-});
-```
-
-#### For React Components
-```javascript
-describe('TideInfoPopup', () => {
-  it('should render tide information', () => {
-    const { getByText } = render(<TideInfoPopup station={mockStation} />);
-    expect(getByText('High Tide')).toBeInTheDocument();
-  });
-  
-  it('should handle missing data gracefully', () => {
-    const { container } = render(<TideInfoPopup station={null} />);
-    expect(container).toBeEmptyDOMElement();
-  });
-});
-```
-
-#### For Async Functions
-```javascript
-describe('fetchTideData', () => {
-  it('should fetch tide data successfully', async () => {
-    const data = await fetchTideData('location');
-    expect(data).toBeDefined();
-    expect(data.tides).toBeInstanceOf(Array);
-  });
-  
-  it('should handle fetch errors', async () => {
-    await expect(fetchTideData('invalid')).rejects.toThrow();
-  });
-});
-```
-
-### Testing Best Practices
-
-1. **Arrange-Act-Assert Pattern**
-   - Arrange: Set up test data and conditions
-   - Act: Execute the function/method being tested
-   - Assert: Verify the results
-
-2. **Test Independence**
-   - Each test should be independent
-   - Tests should not rely on execution order
-   - Use `beforeEach`/`afterEach` for setup/teardown
-
-3. **Meaningful Assertions**
-   - Use specific matchers: `toBe`, `toEqual`, `toBeCloseTo`, `toThrow`
-   - Avoid testing implementation details
-   - Focus on behavior and outputs
-
-4. **Mock External Dependencies**
-   - Mock API calls, database operations
-   - Mock file system operations
-   - Keep unit tests fast and isolated
-
-### Code Review Checklist
-
-Before committing new code, verify:
-- [ ] Test file exists and follows naming convention
-- [ ] All new functions/methods have tests
-- [ ] Tests cover happy path, edge cases, and errors
-- [ ] All tests pass: `npm test -- --run`
-- [ ] Coverage meets minimum 80%: `npm run test:coverage`
-- [ ] Tests are independent and reproducible
-- [ ] Test names are descriptive and clear
-
 ### Running Tests
 
 ```bash
@@ -159,14 +76,6 @@ npm run test:ui
 npm test src/ocean/coordinates.test.js
 ```
 
-### Project Testing Standards
-
-- **Framework**: Vitest v4.1+
-- **Configuration**: `vitest.config.js`
-- **Minimum Coverage**: 80% for new code
-- **Test Environment**: Node.js
-- **Assertion Library**: Vitest (built-in expect)
-
 ### Enforcement
 
 **Pull requests without corresponding unit tests will be REJECTED.**
@@ -175,12 +84,122 @@ New code without tests is considered incomplete and should not be merged.
 
 ---
 
-## Project Context & Documentation
-=======
-# Cursor AI Rules for Development
+## Core Rules for This Project (ALWAYS ENFORCE)
+
+### Function Documentation (REQUIRED)
+Every function MUST have a clear JSDoc-style comment explaining:
+- **What the function does** - Brief description of functionality
+- **Purpose** - Why this function exists
+- **Input parameters** - All parameters with types and descriptions
+- **Output** - Return value with type and description
+
+**Example:**
+```typescript
+/**
+ * Fetches tide data for a given location
+ * 
+ * Purpose: Retrieves current tide height and upcoming extremes from WorldTides API
+ * 
+ * @param {number} iLat - Latitude of the location (-90 to 90)
+ * @param {number} iLon - Longitude of the location (-180 to 180)
+ * @returns {Promise<TideInfo>} oTideData - Tide information including current height and extremes
+ */
+export const fetchTideData = async (iLat: number, iLon: number): Promise<TideInfo> => {
+  // ... function implementation
+  return oTideData
+}
+```
+
+### Variable Naming Convention (REQUIRED)
+
+**Input Parameters:**
+- MUST start with `i` prefix
+- Examples: `iLat`, `iLon`, `iStationId`, `iTimestamp`, `iUserLocation`
+- Purpose: Instantly identify function inputs
+
+**Output/Return Variables:**
+- MUST start with `o` prefix
+- Examples: `oTideData`, `oWaveHeight`, `oStationList`, `oFormattedTime`
+- Purpose: Clearly mark values that will be returned
+
+**Local Variables:**
+- Use normal camelCase (no prefix)
+- Examples: `currentHeight`, `tideStatus`, `mapCenter`, `loadingState`
+- Purpose: Distinguish from inputs and outputs
+
+**Example Function:**
+```typescript
+/**
+ * Calculates distance between two geographic coordinates
+ * 
+ * Purpose: Find distance between user location and tide stations
+ * 
+ * @param {number} iLat1 - Latitude of first point
+ * @param {number} iLon1 - Longitude of first point
+ * @param {number} iLat2 - Latitude of second point
+ * @param {number} iLon2 - Longitude of second point
+ * @returns {number} oDistance - Distance in kilometers
+ */
+export const calculateDistance = (
+  iLat1: number,
+  iLon1: number,
+  iLat2: number,
+  iLon2: number
+): number => {
+  const earthRadius = 6371 // Local variable (no prefix)
+  const dLat = toRadians(iLat2 - iLat1)
+  const dLon = toRadians(iLon2 - iLon1)
+  
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRadians(iLat1)) *
+      Math.cos(toRadians(iLat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2)
+  
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  const oDistance = earthRadius * c
+  
+  return oDistance
+}
+```
+
+**React Component Props:**
+```typescript
+interface TideInfoPopupProps {
+  iStation: TideStation      // Input prop
+  iOnClose: () => void       // Input callback
+}
+
+export const TideInfoPopup: React.FC<TideInfoPopupProps> = ({ 
+  iStation, 
+  iOnClose 
+}) => {
+  // Local state (no prefix)
+  const [tideInfo, setTideInfo] = useState<TideInfo | null>(null)
+  const [loading, setLoading] = useState(true)
+  
+  // Output/rendered content
+  const oPopupContent = (
+    <div className="tide-info-popup">
+      {/* ... */}
+    </div>
+  )
+  
+  return oPopupContent
+}
+```
+
+### Enforcement
+- **Code reviews MUST check** for proper function comments and naming
+- **AI assistants MUST** use this naming convention in all generated code
+- **Refactoring existing code** should gradually adopt this convention
+- **New code** must follow this from day one
+- **Always commit tests with implementation**
+
+---
 
 ## Project Context
->>>>>>> origin/main
 
 ### ALWAYS READ DEVELOPMENT LOG FIRST
 Before starting any work on a project:
@@ -207,7 +226,6 @@ Before starting any work on a project:
 
 **Why**: The development log provides complete project context and prevents duplicate work.
 
-<<<<<<< HEAD
 ### ALWAYS CREATE DEVELOPMENT LOG
 When completing a project or major feature, **ALWAYS** create a `DEVELOPMENT_LOG.md` file with:
 
@@ -231,19 +249,10 @@ When completing a project or major feature, **ALWAYS** create a `DEVELOPMENT_LOG
 - Use consistent indentation (2 spaces for JS/JSX/TS/TSX, 4 for Python)
 - Add comments for complex logic only (avoid obvious comments)
 - **Enforce error handling for external operations**
+- **Write TypeScript types when using TypeScript**
 
 ## Code Organization
 
-=======
-## General Coding Standards
-- Use meaningful and descriptive variable/function names
-- Limit functions to 50 lines
-- Use consistent indentation (2 spaces for JS/JSX, 4 for Python)
-- Add comments for complex logic only (avoid obvious comments)
-- Enforce error handling for external operations
-
-## Code Organization
->>>>>>> origin/main
 - Keep files under 500 lines
 - Avoid nesting deeper than 3 levels
 - Group imports by type and alphabetize
@@ -251,105 +260,28 @@ When completing a project or major feature, **ALWAYS** create a `DEVELOPMENT_LOG
 
 ## Documentation Requirements
 
-<<<<<<< HEAD
-=======
-### ALWAYS CREATE DEVELOPMENT LOG
-When completing a project or major feature, **ALWAYS** create a `DEVELOPMENT_LOG.md` file with:
-
-1. **Project Overview**
-   - Project name and description
-   - Repository/branch information
-   - Status and deployment URL
-
-2. **Complete File Inventory**
-   - List ALL files created
-   - Include purpose/description for each
-   - Organize by category (source, config, docs, assets)
-
-3. **Features Implemented**
-   - Major features list
-   - UI/UX enhancements
-   - API integrations
-   - Technical improvements
-
-4. **Git Commit History**
-   - All commits with messages
-   - Files changed per commit
-   - Brief description of changes
-
-5. **Technology Stack**
-   - Languages and versions
-   - Frameworks and libraries
-   - Tools and services
-   - Dependencies
-
-6. **Project Statistics**
-   - Lines of code
-   - Number of components/modules
-   - Development time
-   - File counts
-
-7. **Design Decisions**
-   - Architecture choices
-   - Color schemes/themes
-   - Layout decisions
-   - Performance optimizations
-
-8. **Configuration & Setup**
-   - API keys and services
-   - Environment variables
-   - Build configuration
-   - Deployment settings
-
-9. **Testing & Quality**
-   - Test results
-   - Performance metrics
-   - Browser/device support
-   - Known issues
-
-10. **Future Enhancements**
-    - Planned features
-    - Technical debt
-    - Improvement opportunities
-
-**Format**: Use clear markdown with sections, tables, code blocks, and checkboxes.
-
-**When to create**: 
-- At project completion
-- After major feature additions
-- When requested by user
-- Before final commit/deployment
-
-### Other Documentation
->>>>>>> origin/main
 - Create README.md for all projects
 - Add inline comments for complex algorithms
 - Document API endpoints and responses
 - Include setup/installation instructions
-<<<<<<< HEAD
 - **Always document test coverage and testing approach**
 
-## Security
-
-=======
-
 ## Testing
+
 - Require unit tests for public functions
 - Test edge cases and error conditions
 - Avoid console.log in production (use proper logging)
+- **Minimum 80% code coverage for new code**
 
 ## Security
->>>>>>> origin/main
+
 - Never commit API keys or secrets
 - Use environment variables for sensitive data
 - Validate and sanitize user inputs
 - Follow secure coding practices
 
 ## Performance
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/main
 - Avoid global variables
 - Optimize for mobile performance
 - Use caching strategies
@@ -362,10 +294,7 @@ When completing a project or major feature, **ALWAYS** create a `DEVELOPMENT_LOG
 - Prefer arrow functions for callbacks
 - Use const/let instead of var
 - Handle promises with async/await
-<<<<<<< HEAD
 - **Write TypeScript types when using TypeScript**
-=======
->>>>>>> origin/main
 
 ### Python
 - Follow PEP 8 guidelines
@@ -374,23 +303,15 @@ When completing a project or major feature, **ALWAYS** create a `DEVELOPMENT_LOG
 - Use virtual environments
 
 ## Git Practices
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/main
 - Write clear, descriptive commit messages
 - Commit logical units of work
 - Don't commit commented-out code
 - Keep commits focused and atomic
-<<<<<<< HEAD
 - **Always commit tests with implementation**
 
 ## Progressive Web Apps (PWA)
 
-=======
-
-## Progressive Web Apps (PWA)
->>>>>>> origin/main
 - Include manifest.json
 - Configure service worker
 - Add offline support
@@ -398,17 +319,190 @@ When completing a project or major feature, **ALWAYS** create a `DEVELOPMENT_LOG
 
 ---
 
-<<<<<<< HEAD
+## Code Review Standards (2026)
+
+### When to Conduct Code Reviews
+- Before merging to main branch
+- After major feature completion
+- When requested by team/user
+- Before production deployment
+- After integrating new dependencies
+
+### Code Review Framework (9 Priority Areas)
+
+#### 1. Correctness & Functionality (Critical)
+- **Does the code work as intended?**
+  - Test all user flows and edge cases
+  - Verify API integration works correctly
+  - Check error states (no data, API failure, slow connection, no GPS)
+  - Test with real data, not just mock data
+- **Red Flags:**
+  - Duplicate implementations (e.g., App.jsx AND App.tsx)
+  - Dead/orphaned code that's never imported
+  - Features documented but not actually working
+  - Missing critical dependencies in package.json
+
+#### 2. Architecture & Structure (Critical)
+- **Is the project well-organized?**
+  - Clear folder structure: `/services`, `/hooks`, `/components`, `/data`, `/utils`, `/types`
+  - Components should be < 150-200 lines
+  - Single Responsibility Principle: each file does ONE thing well
+  - No duplicate service layers (e.g., tideService.js AND tideApi.ts)
+- **Required Patterns:**
+  - Custom hooks for ALL data fetching (useTideData, useMarineWeather)
+  - Service layer for ALL API calls
+  - Shared utilities in `/utils`
+  - TypeScript types in `/types`
+- **Red Flags:**
+  - Mixed .js/.jsx and .ts/.tsx for same features
+  - Data fetching directly in components
+  - Functions > 50 lines
+  - Files > 500 lines
+
+#### 3. React Best Practices (2026 Standards) (Critical)
+- **Must Have:**
+  - Functional components + hooks (no class components)
+  - TanStack Query (React Query) for ALL API data
+  - Custom hooks for reusable logic
+  - Proper dependency arrays in useEffect/useCallback/useMemo
+  - Error boundaries around major features
+- **Must NOT Have:**
+  - Unnecessary useEffect (use TanStack Query instead)
+  - console.log in production code
+  - Inline data fetching in components
+  - Missing loading/error states
+- **Performance:**
+  - useMemo for expensive calculations
+  - useCallback for functions passed to children
+  - React.memo for expensive components
+  - Lazy loading for heavy components
+
+#### 4. Leaflet / Map Best Practices (Critical)
+- **Setup:**
+  - Import Leaflet CSS from npm (not CDN)
+  - Map container must have explicit height
+  - Use React-Leaflet components properly
+- **Performance:**
+  - Don't recreate map on every render
+  - Memoize marker icons
+  - Use marker clustering for 10+ markers
+  - Stable flyTo/setView implementations
+- **UX:**
+  - Handle map events cleanly
+  - Touch-friendly controls on mobile
+  - Proper zoom controls positioning
+
+#### 5. API & Data Handling (Critical)
+- **Service Layer Required:**
+  - All API calls in dedicated service files
+  - Never fetch data directly in components
+  - Use environment variables (VITE_*) for API keys
+- **TanStack Query Required (2026 Standard):**
+  ```typescript
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['tide', lat, lon],
+    queryFn: () => fetchTideData(lat, lon),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+  })
+  ```
+- **Error Handling:**
+  - Graceful fallbacks for API failures
+  - User-friendly error messages
+  - Retry logic with exponential backoff
+  - Loading states for all async operations
+- **Red Flags:**
+  - Direct fetch() calls in components
+  - No caching strategy
+  - Hardcoded API keys
+  - No error boundaries
+
+#### 6. Performance & Mobile (High Priority)
+- **Mobile First:**
+  - Touch-friendly UI (48px+ tap targets)
+  - Bottom sheets instead of popups on mobile
+  - Responsive breakpoints (mobile, tablet, desktop)
+- **Performance:**
+  - Fast initial load (< 3s on 3G)
+  - Smooth map interactions (60fps)
+  - Lazy load heavy components
+  - Code splitting for routes
+  - Optimize images (WebP, lazy loading)
+- **Bundle Size:**
+  - Monitor bundle size (< 500KB initial)
+  - Tree-shaking unused code
+  - Avoid importing entire libraries
+
+#### 7. Security (High Priority)
+- **API Keys:**
+  - NEVER expose in client code
+  - Use .env files (not committed)
+  - Validate .gitignore includes .env
+- **Data Validation:**
+  - Sanitize all user inputs
+  - Validate API responses
+  - Type-safe with TypeScript
+- **Dependencies:**
+  - Regular npm audit
+  - Update vulnerable packages
+  - Pin dependency versions
+
+#### 8. UX / Accessibility / PWA (Medium Priority)
+- **UX:**
+  - Loading skeletons (not just spinners)
+  - Empty states with helpful messages
+  - Clear error messages with actions
+  - Optimistic UI updates
+- **Accessibility:**
+  - ARIA labels on interactive elements
+  - Keyboard navigation support
+  - Semantic HTML
+  - Color contrast ratios (WCAG AA)
+- **PWA (if applicable):**
+  - manifest.json properly configured
+  - Service worker for offline support
+  - Install prompt handling
+  - Cached assets for offline use
+
+#### 9. Code Quality & Maintainability (Medium Priority)
+- **TypeScript:**
+  - 100% TypeScript preferred (no .js files)
+  - Strict mode enabled
+  - No `any` types (use `unknown` if needed)
+  - Proper interfaces for all data structures
+- **Code Style:**
+  - Consistent naming conventions
+  - DRY principle (Don't Repeat Yourself)
+  - Meaningful variable/function names
+  - Comments explain "why", not "what"
+- **Testing:**
+  - Unit tests for utilities/hooks
+  - Integration tests for critical flows
+  - E2E tests for user journeys
+- **Documentation:**
+  - README with setup instructions
+  - API documentation
+  - Complex logic explained in comments
+
+### Review Scoring Guide
+
+- **9-10**: Production ready, minor suggestions only
+- **7-8**: Good quality, needs minor improvements
+- **5-6**: Functional but needs significant refactoring
+- **3-4**: Major architectural issues, not production ready
+- **1-2**: Fundamental problems, requires rebuild
+
+---
+
 ## Summary
 
 **REMEMBER**: 
 1. **Code without tests is incomplete code** - Always write tests alongside your implementation
-2. Read DEVELOPMENT_LOG.md before starting work
-3. Update documentation after making changes
-4. Maintain 80%+ test coverage
-5. Follow TDD workflow when possible
+2. **Use i/o naming convention** - All inputs prefixed with `i`, outputs with `o`
+3. **Add JSDoc to every function** - Document what, purpose, params, returns
+4. Read DEVELOPMENT_LOG.md before starting work
+5. Update documentation after making changes
+6. Maintain 80%+ test coverage
+7. Follow TDD workflow when possible
 
 These rules ensure consistent, tested, documented, and maintainable code across all projects.
-=======
-**Note**: These rules ensure consistent, documented, and maintainable code across all projects.
->>>>>>> origin/main

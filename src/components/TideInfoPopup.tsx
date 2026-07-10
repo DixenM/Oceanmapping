@@ -1,49 +1,57 @@
-import React, { useEffect, useState } from 'react'
-import { TideInfo, TideStation } from '../types'
-import { fetchTideData } from '../services/tideApi'
+import React from 'react'
+import { TideStation } from '../types'
+import { useTideData } from '../hooks/useTideData'
 import { formatHeight, formatDateTime } from '../utils/helpers'
 import '../styles/TideInfoPopup.css'
 
+/**
+ * TideInfoPopup component props
+ */
 interface TideInfoPopupProps {
-  station: TideStation
-  onClose: () => void
+  iStation: TideStation
+  iOnClose: () => void
 }
 
+/**
+ * TideInfoPopup component - Displays detailed tide information for a station
+ * 
+ * Purpose: Shows current tide height, status (rising/falling), and upcoming
+ * high/low tides in a modal popup overlay
+ * 
+ * Features:
+ * - Real-time tide data with TanStack Query
+ * - Automatic caching and refetching
+ * - Loading skeleton
+ * - Error handling
+ * - Color-coded tide status
+ * - Upcoming tide extremes
+ * 
+ * @param {TideInfoPopupProps} props - Component props
+ * @returns {JSX.Element} Tide information popup
+ */
 export const TideInfoPopup: React.FC<TideInfoPopupProps> = ({ 
-  station, 
-  onClose 
+  iStation, 
+  iOnClose 
 }) => {
-  const [tideInfo, setTideInfo] = useState<TideInfo | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    const loadTideData = async () => {
-      setLoading(true)
-      setError(null)
-      
-      try {
-        const data = await fetchTideData(station.latitude, station.longitude)
-        setTideInfo(data)
-      } catch (err) {
-        setError('Failed to load tide data')
-        console.error(err)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    loadTideData()
-  }, [station])
+  const { data: tideInfo, isLoading: loading, error } = useTideData(
+    iStation.latitude,
+    iStation.longitude
+  )
 
   return (
     <div className="tide-info-popup">
       <div className="popup-header">
         <div>
-          <h2>{station.name}</h2>
-          <p className="station-location">{station.city}, {station.region}</p>
+          <h2>{iStation.name}</h2>
+          <p className="station-location">{iStation.city}, {iStation.region}</p>
         </div>
-        <button onClick={onClose} className="close-button">✕</button>
+        <button 
+          onClick={iOnClose} 
+          className="close-button"
+          aria-label="Close tide information"
+        >
+          ✕
+        </button>
       </div>
 
       {loading && (
@@ -55,7 +63,7 @@ export const TideInfoPopup: React.FC<TideInfoPopupProps> = ({
 
       {error && (
         <div className="popup-error">
-          <p>⚠️ {error}</p>
+          <p>⚠️ Failed to load tide data. Please try again.</p>
         </div>
       )}
 

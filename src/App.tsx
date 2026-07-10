@@ -8,8 +8,12 @@ import { TideInfoPopup } from './components/TideInfoPopup'
 import { danishTideStations } from './data/stations'
 import { TideStation } from './types'
 import './styles/App.css'
-import 'leaflet/dist/leaflet.css'
 
+/**
+ * Default Leaflet marker icon configuration
+ * 
+ * Purpose: Configure standard blue marker icons for tide station locations
+ */
 const defaultIcon = new Icon({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
   iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
@@ -20,42 +24,93 @@ const defaultIcon = new Icon({
   shadowSize: [41, 41]
 })
 
+/**
+ * MapController component props
+ */
 interface MapControllerProps {
-  center: LatLngExpression
-  zoom: number
+  iCenter: LatLngExpression
+  iZoom: number
 }
 
-const MapController: React.FC<MapControllerProps> = ({ center, zoom }) => {
+/**
+ * MapController component - Controls map view programmatically
+ * 
+ * Purpose: Animates map to new center/zoom when station is selected
+ * Uses React-Leaflet's useMap hook to access Leaflet map instance
+ * 
+ * @param {MapControllerProps} props - Map center and zoom level
+ * @returns {null} Component has no visual output
+ */
+const MapController: React.FC<MapControllerProps> = ({ iCenter, iZoom }) => {
   const map = useMap()
   
   React.useEffect(() => {
-    map.flyTo(center, zoom, {
+    map.flyTo(iCenter, iZoom, {
       duration: 1.5
     })
-  }, [center, zoom, map])
+  }, [iCenter, iZoom, map])
 
   return null
 }
 
+/**
+ * App component - Main application component
+ * 
+ * Purpose: Root component for Danish Tide Tracker application
+ * Manages application state and coordinates all child components
+ * 
+ * Features:
+ * - Interactive Leaflet map centered on Denmark
+ * - 15 tide monitoring stations
+ * - Station search and filtering
+ * - GPS location detection
+ * - Real-time tide data display
+ * - Mobile-responsive design
+ * 
+ * @returns {JSX.Element} Main application UI
+ */
 const App: React.FC = () => {
   const [selectedStation, setSelectedStation] = useState<TideStation | null>(null)
   const [mapCenter, setMapCenter] = useState<LatLngExpression>([56.0, 10.0])
   const [mapZoom, setMapZoom] = useState(7)
   const [showPopup, setShowPopup] = useState(false)
 
-  const handleStationSelect = useCallback((station: TideStation) => {
-    setMapCenter([station.latitude, station.longitude])
+  /**
+   * Handles station selection from search, location, or station list
+   * 
+   * Purpose: Center map on selected station and open tide info popup
+   * 
+   * @param {TideStation} iStation - Selected tide station
+   * @returns {void}
+   */
+  const handleStationSelect = useCallback((iStation: TideStation): void => {
+    setMapCenter([iStation.latitude, iStation.longitude])
     setMapZoom(12)
-    setSelectedStation(station)
+    setSelectedStation(iStation)
     setShowPopup(true)
   }, [])
 
-  const handleMarkerClick = useCallback((station: TideStation) => {
-    setSelectedStation(station)
+  /**
+   * Handles marker click on map
+   * 
+   * Purpose: Open tide info popup when user clicks a map marker
+   * 
+   * @param {TideStation} iStation - Clicked tide station
+   * @returns {void}
+   */
+  const handleMarkerClick = useCallback((iStation: TideStation): void => {
+    setSelectedStation(iStation)
     setShowPopup(true)
   }, [])
 
-  const handleClosePopup = useCallback(() => {
+  /**
+   * Handles popup close request
+   * 
+   * Purpose: Hide tide info popup
+   * 
+   * @returns {void}
+   */
+  const handleClosePopup = useCallback((): void => {
     setShowPopup(false)
   }, [])
 
@@ -66,16 +121,16 @@ const App: React.FC = () => {
       </header>
 
       <div className="search-controls">
-        <SearchBar onStationSelect={handleStationSelect} />
+        <SearchBar iOnStationSelect={handleStationSelect} />
         <LocationButton 
-          stations={danishTideStations} 
-          onLocationFound={handleStationSelect} 
+          iStations={danishTideStations} 
+          iOnLocationFound={handleStationSelect} 
         />
       </div>
 
       <StationList 
-        stations={danishTideStations}
-        onStationSelect={handleStationSelect}
+        iStations={danishTideStations}
+        iOnStationSelect={handleStationSelect}
       />
 
       <div className="map-container">
@@ -90,7 +145,7 @@ const App: React.FC = () => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           
-          <MapController center={mapCenter} zoom={mapZoom} />
+          <MapController iCenter={mapCenter} iZoom={mapZoom} />
 
           {danishTideStations.map(station => (
             <Marker
@@ -115,8 +170,8 @@ const App: React.FC = () => {
       {showPopup && selectedStation && (
         <div className="popup-overlay">
           <TideInfoPopup 
-            station={selectedStation}
-            onClose={handleClosePopup}
+            iStation={selectedStation}
+            iOnClose={handleClosePopup}
           />
         </div>
       )}
