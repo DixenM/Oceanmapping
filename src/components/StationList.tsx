@@ -41,7 +41,7 @@ export const StationList: React.FC<StationListProps> = ({
   const [isOpen, setIsOpen] = useState(false)
   const [filterType, setFilterType] = useState<FilterType>('all')
   
-  const { oIsFavorite, oToggleFavorite, oFavoriteCount, oFavorites } = useFavorites()
+  const { oIsFavorite, oToggleFavorite, oFavoriteCount, oFavoriteMap, oLoadError } = useFavorites()
 
   /**
    * Toggles the station list panel open/closed
@@ -72,11 +72,11 @@ export const StationList: React.FC<StationListProps> = ({
    * 
    * Purpose: Toggle favorite status without triggering station selection
    * 
-   * @param {React.MouseEvent} iEvent - Mouse event
+   * @param {React.MouseEvent | React.KeyboardEvent} iEvent - Mouse or keyboard event
    * @param {string} iStationId - Station ID to toggle
    * @returns {void}
    */
-  const handleFavoriteClick = (iEvent: React.MouseEvent, iStationId: string): void => {
+  const handleFavoriteClick = (iEvent: React.MouseEvent | React.KeyboardEvent, iStationId: string): void => {
     iEvent.stopPropagation() // Prevent station selection
     oToggleFavorite(iStationId)
   }
@@ -101,28 +101,33 @@ export const StationList: React.FC<StationListProps> = ({
    * Filters and sorts stations based on current filter and favorites
    * 
    * Purpose: Show all stations or only favorites, with favorites sorted to top
+   * Optimized to pre-compute favorite status for O(n) performance
    * 
    * @returns {TideStation[]} Filtered and sorted stations
    */
   const filteredStations = useMemo(() => {
     let result = iStations
 
-    // Apply favorites filter
+    // Apply favorites filter using Map for O(n) performance
     if (filterType === 'favorites') {
-      const favoriteIds = new Set(oFavorites.map(fav => fav.stationId))
-      result = result.filter(station => favoriteIds.has(station.id))
+      result = result.filter(station => oFavoriteMap.has(station.id))
     }
 
-    // Sort: favorites first, then alphabetically
-    return result.sort((a, b) => {
-      const aIsFav = oIsFavorite(a.id)
-      const bIsFav = oIsFavorite(b.id)
+    // Pre-compute favorite status for each station to avoid O(n²) lookups during sort
+    const stationsWithFavStatus = result.map(station => ({
+      station,
+      isFav: oFavoriteMap.has(station.id)
+    }))
 
-      if (aIsFav && !bIsFav) return -1
-      if (!aIsFav && bIsFav) return 1
-      return a.name.localeCompare(b.name)
-    })
-  }, [iStations, filterType, oFavorites, oIsFavorite])
+    // Sort: favorites first, then alphabetically (prevents array mutation)
+    return stationsWithFavStatus
+      .sort((a, b) => {
+        if (a.isFav && !b.isFav) return -1
+        if (!a.isFav && b.isFav) return 1
+        return a.station.name.localeCompare(b.station.name)
+      })
+      .map(item => item.station)
+  }, [iStations, filterType, oFavoriteMap])
 
   // Group stations by region for better organization
   const stationsByRegion = filteredStations.reduce((acc, station) => {
@@ -173,6 +178,12 @@ export const StationList: React.FC<StationListProps> = ({
             Favorites {oFavoriteCount > 0 && <span className="filter-badge">{oFavoriteCount}</span>}
           </button>
         </div>
+
+        {oLoadError && (
+          <div className="load-error-banner">
+            ⚠️ {oLoadError}
+          </div>
+        )}
         
         <div className="station-list-content">
           {Object.keys(stationsByRegion).length === 0 && filterType === 'favorites' && (
@@ -208,6 +219,12 @@ export const StationList: React.FC<StationListProps> = ({
                       <button
                         className={`favorite-button-list ${isFavorited ? 'favorited' : ''}`}
                         onClick={(e) => handleFavoriteClick(e, station.id)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault()
+                            handleFavoriteClick(e, station.id)
+                          }
+                        }}
                         aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
                         title={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
                       >

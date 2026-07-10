@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { FavoriteStation } from '../types'
 import { logger } from '../utils/logger'
 
@@ -30,6 +30,9 @@ const STORAGE_KEY = 'oceanmapping_favorites'
  * @returns {Function} oFavoritesApi.oIsFavorite - Check if station is favorited
  * @returns {Function} oFavoritesApi.oClearFavorites - Clear all favorites
  * @returns {number} oFavoritesApi.oFavoriteCount - Total number of favorites
+ * @returns {boolean} oFavoritesApi.oIsLoaded - Whether favorites have finished loading
+ * @returns {string | null} oFavoritesApi.oLoadError - Error message if loading failed
+ * @returns {Map<string, boolean>} oFavoritesApi.oFavoriteMap - Map for O(1) lookups
  * 
  * @example
  * const { oFavorites, oAddFavorite, oIsFavorite } = useFavorites()
@@ -43,6 +46,7 @@ const STORAGE_KEY = 'oceanmapping_favorites'
 export const useFavorites = () => {
   const [oFavorites, setFavorites] = useState<FavoriteStation[]>([])
   const [oIsLoaded, setIsLoaded] = useState(false)
+  const [oLoadError, setLoadError] = useState<string | null>(null)
 
   /**
    * Loads favorites from localStorage on initial mount
@@ -65,6 +69,7 @@ export const useFavorites = () => {
       logger.error('Failed to load favorites from localStorage', error)
       // Reset to empty array if corrupted
       setFavorites([])
+      setLoadError('Failed to load saved favorites. Your favorites list has been reset.')
     } finally {
       setIsLoaded(true)
     }
@@ -97,6 +102,11 @@ export const useFavorites = () => {
    * @returns {void}
    */
   const oAddFavorite = useCallback((iStationId: string): void => {
+    if (!iStationId || typeof iStationId !== 'string' || iStationId.trim() === '') {
+      logger.warn('Invalid station ID provided to oAddFavorite')
+      return
+    }
+
     setFavorites((prevFavorites) => {
       // Check if already favorited
       if (prevFavorites.some((fav) => fav.stationId === iStationId)) {
@@ -124,6 +134,11 @@ export const useFavorites = () => {
    * @returns {void}
    */
   const oRemoveFavorite = useCallback((iStationId: string): void => {
+    if (!iStationId || typeof iStationId !== 'string') {
+      logger.warn('Invalid station ID provided to oRemoveFavorite')
+      return
+    }
+
     setFavorites((prevFavorites) => {
       const filtered = prevFavorites.filter((fav) => fav.stationId !== iStationId)
       
@@ -146,6 +161,11 @@ export const useFavorites = () => {
    * @returns {void}
    */
   const oToggleFavorite = useCallback((iStationId: string): void => {
+    if (!iStationId || typeof iStationId !== 'string') {
+      logger.warn('Invalid station ID provided to oToggleFavorite')
+      return
+    }
+
     setFavorites((prevFavorites) => {
       const isFavorited = prevFavorites.some((fav) => fav.stationId === iStationId)
 
@@ -164,16 +184,28 @@ export const useFavorites = () => {
   }, [])
 
   /**
+   * Creates a Map for O(1) favorite lookups
+   * 
+   * Purpose: Optimize favorite checking performance
+   * 
+   * @returns {Map<string, boolean>} Map of favorited station IDs
+   */
+  const oFavoriteMap = useMemo(() => {
+    return new Map(oFavorites.map((fav) => [fav.stationId, true]))
+  }, [oFavorites])
+
+  /**
    * Checks if a station is in favorites
    * 
    * Purpose: Determine if a given station ID is currently favorited
+   * Uses Map for O(1) lookup performance
    * 
    * @param {string} iStationId - Station ID to check
    * @returns {boolean} oIsFavorited - True if station is favorited
    */
   const oIsFavorite = useCallback((iStationId: string): boolean => {
-    return oFavorites.some((fav) => fav.stationId === iStationId)
-  }, [oFavorites])
+    return oFavoriteMap.has(iStationId)
+  }, [oFavoriteMap])
 
   /**
    * Clears all favorites
@@ -204,6 +236,8 @@ export const useFavorites = () => {
     oIsFavorite,
     oClearFavorites,
     oFavoriteCount,
-    oIsLoaded
+    oIsLoaded,
+    oLoadError,
+    oFavoriteMap
   }
 }
