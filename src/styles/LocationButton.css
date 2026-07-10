@@ -1,0 +1,71 @@
+.location-button-container {
+  position: relative;
+}
+
+.location-button {
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  padding: 0.75rem 1rem;
+  font-size: 1.5rem;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.location-button:hover:not(:disabled) {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-2px);
+  background-color: #f8fafc;
+}
+
+.location-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.location-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.location-error {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  box-shadow: var(--shadow-md);
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .location-button {
+    width: 50px;
+    height: 50px;
+    padding: 0.625rem;
+    font-size: 1.375rem;
+    border-radius: 10px;
+  }
+
+  .location-error {
+    font-size: 0.8125rem;
+  }
+}

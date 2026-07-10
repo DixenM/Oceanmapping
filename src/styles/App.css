@@ -1,0 +1,94 @@
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app-header {
+  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  color: white;
+  padding: 1rem 1.5rem;
+  box-shadow: var(--shadow-md);
+  z-index: 1000;
+}
+
+.app-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.search-controls {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  gap: 0.5rem;
+  width: calc(100% - 2rem);
+  max-width: 500px;
+}
+
+.map-container {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.leaflet-container {
+  font-family: inherit;
+}
+
+.marker-popup {
+  padding: 0.5rem 0;
+}
+
+.marker-popup strong {
+  font-size: 1rem;
+  color: var(--text-color);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.marker-popup p {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1rem;
+  backdrop-filter: blur(2px);
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .app-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .search-controls {
+    top: 65px;
+    gap: 0.25rem;
+  }
+
+  .popup-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+}

@@ -2,11 +2,17 @@
 
 A comprehensive web application combining real-time tide tracking and marine weather forecasting for Danish coastal stations. Built with React, TypeScript, and modern web technologies.
 
+<<<<<<< HEAD
 > **🧪 Test-First Development**: This project enforces mandatory unit testing for all code. See [Contributing Guidelines](CONTRIBUTING.md) and [.cursorrules](.cursorrules) for testing requirements.
 
 ## ✨ Features
 
 ### 🌊 Marine Weather Overlay
+=======
+## ✨ Features
+
+### 🌊 Marine Weather Overlay (NEW!)
+>>>>>>> origin/main
 - **Real-time Marine Weather Data** from Open-Meteo Marine API (free, no API key needed)
 - **Wave Height Visualization** with color-coded markers
 - **Wind Speed & Direction** with compass indicators and directional arrows
@@ -69,6 +75,7 @@ npm run dev
 
 5. Open your browser to `http://localhost:3000`
 
+<<<<<<< HEAD
 ## 🧪 Testing
 
 This project uses [Vitest](https://vitest.dev/) for unit testing - a blazing fast test runner built on Vite.
@@ -126,6 +133,8 @@ describe('MyModule', () => {
 
 **⚠️ IMPORTANT**: All new code must include corresponding unit tests. See `.cursorrules` and `CONTRIBUTING.md` for full testing requirements.
 
+=======
+>>>>>>> origin/main
 ## 🏗️ Building for Production
 
 ```bash
@@ -138,7 +147,10 @@ npm run preview
 - **React 18** - UI framework
 - **TypeScript** - Type safety and developer experience
 - **Vite** - Build tool and dev server
+<<<<<<< HEAD
 - **Vitest** - Unit testing framework
+=======
+>>>>>>> origin/main
 - **Leaflet** - Interactive maps
 - **React Leaflet** - React components for Leaflet
 - **WorldTides API** - Real-time tide data
@@ -232,6 +244,7 @@ oceanmapping/
 │   │   └── tideService.js
 │   ├── types/           # TypeScript types
 │   │   └── index.ts
+<<<<<<< HEAD
 │   ├── utils/           # Utility functions with tests
 │   │   ├── calculator.js
 │   │   ├── calculator.test.js
@@ -239,6 +252,8 @@ oceanmapping/
 │   ├── ocean/           # Ocean-specific utilities with tests
 │   │   ├── coordinates.js
 │   │   └── coordinates.test.js
+=======
+>>>>>>> origin/main
 │   ├── styles/          # CSS modules
 │   │   ├── App.css
 │   │   ├── SearchBar.css
@@ -251,7 +266,10 @@ oceanmapping/
 │   └── vite-env.d.ts
 ├── test/                # Test suites
 │   └── testMarineWeatherService.js
+<<<<<<< HEAD
 ├── vitest.config.js     # Vitest configuration
+=======
+>>>>>>> origin/main
 ├── index.html
 ├── vite.config.ts
 ├── tsconfig.json
@@ -273,11 +291,16 @@ npm run preview
 # Run linter
 npm run lint
 
+<<<<<<< HEAD
 # Run all tests
 npm test
 
 # Run with coverage
 npm run test:coverage
+=======
+# Run marine weather tests
+npm test
+>>>>>>> origin/main
 ```
 
 ## 📱 Mobile Experience
@@ -332,6 +355,7 @@ The app is fully optimized for mobile devices with:
 - Recommended actions
 - Historical context for conditions
 
+<<<<<<< HEAD
 ## 🎯 Testing Best Practices
 
 1. **Test file naming**: Use `.test.js` or `.test.ts` suffix
@@ -366,6 +390,8 @@ See [.cursorrules](.cursorrules) for AI-assisted development guidelines.
 
 **Note**: Pull requests without tests will not be accepted.
 
+=======
+>>>>>>> origin/main
 ## 🚀 Future Enhancements
 
 - Integration with DMI (Danish Meteorological Institute)
@@ -381,10 +407,21 @@ See [.cursorrules](.cursorrules) for AI-assisted development guidelines.
 
 MIT
 
+<<<<<<< HEAD
+=======
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+>>>>>>> origin/main
 ## 🙏 Acknowledgments
 
 - OpenStreetMap contributors for map tiles
 - WorldTides for tide prediction API
 - Open-Meteo for free marine weather API
 - Danish coastal monitoring stations
+<<<<<<< HEAD
 - The React, TypeScript, Vite, and Vitest communities
+=======
+- The React, TypeScript, and Vite communities
+>>>>>>> origin/main
