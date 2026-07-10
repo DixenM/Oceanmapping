@@ -11,7 +11,6 @@ const API_BASE_URL = 'https://www.worldtides.info/api/v3'
 // Debug logging for API key (only shows if key exists, not the actual key value)
 if (import.meta.env.DEV) {
   console.log('[TideAPI] API Key loaded:', WORLDTIDES_API_KEY ? '✓ Present' : '✗ Missing')
-  console.log('[TideAPI] Using key:', WORLDTIDES_API_KEY || 'NONE')
 }
 
 /**

@@ -61,7 +61,7 @@ const MapController: React.FC<MapControllerProps> = ({ iCenter, iZoom }) => {
  * 
  * Features:
  * - Interactive Leaflet map centered on Denmark
- * - 15 tide monitoring stations
+ * - 53 tide monitoring stations across all Danish regions
  * - Station search and filtering
  * - GPS location detection
  * - Real-time tide data display
