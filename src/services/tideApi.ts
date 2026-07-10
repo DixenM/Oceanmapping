@@ -1,8 +1,18 @@
 import { TideInfo, TideData, TideStatus } from '../types'
 import { logError } from '../utils/logger'
 
-const WORLDTIDES_API_KEY = import.meta.env.VITE_WORLDTIDES_API_KEY || 'demo'
+/**
+ * WorldTides API configuration
+ * Purpose: Load API key from environment and set base URL
+ */
+const WORLDTIDES_API_KEY = import.meta.env.VITE_WORLDTIDES_KEY || ''
 const API_BASE_URL = 'https://www.worldtides.info/api/v3'
+
+// Debug logging for API key (only shows if key exists, not the actual key value)
+if (import.meta.env.DEV) {
+  console.log('[TideAPI] API Key loaded:', WORLDTIDES_API_KEY ? '✓ Present' : '✗ Missing')
+  console.log('[TideAPI] Using key:', WORLDTIDES_API_KEY || 'NONE')
+}
 
 /**
  * Fetches tide data for a given geographic location from WorldTides API
@@ -19,6 +29,17 @@ export const fetchTideData = async (
   iLatitude: number,
   iLongitude: number
 ): Promise<TideInfo> => {
+  // Check if API key is configured
+  if (!WORLDTIDES_API_KEY || WORLDTIDES_API_KEY.trim() === '') {
+    const errorMessage = 'API key not configured. Please add VITE_WORLDTIDES_KEY to your .env file.'
+    console.error('[TideAPI] ' + errorMessage)
+    throw new Error(errorMessage)
+  }
+
+  if (import.meta.env.DEV) {
+    console.log(`[TideAPI] Fetching tide data for lat: ${iLatitude}, lon: ${iLongitude}`)
+  }
+
   try {
     const now = new Date()
     const startTimestamp = Math.floor(now.getTime() / 1000) - 86400 // 24 hours ago
@@ -28,21 +49,39 @@ export const fetchTideData = async (
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
 
-    const response = await fetch(
-      `${API_BASE_URL}?extremes&heights&lat=${iLatitude}&lon=${iLongitude}&start=${startTimestamp}&length=${lengthSeconds}&key=${WORLDTIDES_API_KEY}`,
-      { signal: controller.signal }
-    )
+    const apiUrl = `${API_BASE_URL}?extremes&heights&lat=${iLatitude}&lon=${iLongitude}&start=${startTimestamp}&length=${lengthSeconds}&key=${WORLDTIDES_API_KEY}`
+    
+    if (import.meta.env.DEV) {
+      // Log URL without exposing the full API key
+      console.log(`[TideAPI] Request URL: ${apiUrl.replace(WORLDTIDES_API_KEY, '***KEY***')}`)
+    }
+
+    const response = await fetch(apiUrl, { signal: controller.signal })
 
     clearTimeout(timeoutId)
 
     if (!response.ok) {
-      throw new Error(`WorldTides API error: ${response.status}`)
+      const errorText = await response.text().catch(() => 'Unknown error')
+      console.error(`[TideAPI] API error ${response.status}: ${errorText}`)
+      
+      if (response.status === 401 || response.status === 403) {
+        throw new Error('Invalid API key. Please check your VITE_WORLDTIDES_KEY.')
+      } else if (response.status === 429) {
+        throw new Error('Rate limit exceeded. Please try again later.')
+      } else {
+        throw new Error(`API error (${response.status}). Please try again.`)
+      }
     }
 
     const data = await response.json()
 
+    if (import.meta.env.DEV) {
+      console.log('[TideAPI] Response data:', data)
+    }
+
     if (!data.extremes || data.extremes.length === 0) {
-      throw new Error('No tide extremes data available from API')
+      console.error('[TideAPI] No tide extremes in response:', data)
+      throw new Error('No tide data available for this location.')
     }
 
     const currentHeight = data.heights?.[0]?.height || 0
@@ -65,15 +104,32 @@ export const fetchTideData = async (
       status
     }
 
+    if (import.meta.env.DEV) {
+      console.log('[TideAPI] Successfully fetched tide data:', oTideData)
+    }
+
     return oTideData
   } catch (error) {
     // Handle timeout errors specifically
     if (error instanceof Error && error.name === 'AbortError') {
+      const timeoutError = 'Request timeout - please try again'
+      console.error('[TideAPI] ' + timeoutError)
       logError('Request timeout: WorldTides API took longer than 10 seconds', error)
-      throw new Error('Request timeout - please try again')
+      throw new Error(timeoutError)
     }
+    
+    // Re-throw API key and other user-facing errors as-is
+    if (error instanceof Error && 
+        (error.message.includes('API key') || 
+         error.message.includes('Rate limit') ||
+         error.message.includes('No tide data'))) {
+      throw error
+    }
+
+    // Log and wrap unexpected errors
+    console.error('[TideAPI] Unexpected error:', error)
     logError('Error fetching tide data from WorldTides API', error)
-    throw error
+    throw new Error('Failed to load tide data. Please check your connection and try again.')
   }
 }
 
