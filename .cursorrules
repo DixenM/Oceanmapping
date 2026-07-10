@@ -1,5 +1,59 @@
 # Cursor AI Rules for Oceanmapping Project
 
+## 🚨 CRITICAL: Always Pull from Main Before Starting Work
+
+**MANDATORY FIRST STEP**: Before starting ANY work, ALWAYS pull the latest changes from the main branch.
+
+### Required Git Workflow (ALWAYS Follow)
+
+```bash
+# 1. FIRST: Check current branch
+git branch
+
+# 2. ALWAYS: Fetch latest changes from remote
+git fetch origin main
+
+# 3. If on main branch, pull directly
+git pull origin main
+
+# 4. If on feature branch, merge main into your branch
+git merge origin/main
+# OR rebase (if preferred):
+# git rebase origin/main
+
+# 5. Resolve any conflicts if they occur
+# 6. THEN start your work
+```
+
+### Why This is Critical
+
+- **Prevents merge conflicts**: Working with latest code reduces conflicts later
+- **Avoids duplicate work**: See what others have done recently
+- **Ensures compatibility**: Your changes work with the latest codebase
+- **Reduces integration issues**: Smaller, frequent merges are easier
+- **Team coordination**: Stay in sync with team changes
+
+### When to Pull from Main
+
+- ✅ **At the start of EVERY new task or agent session**
+- ✅ Before creating a new feature branch
+- ✅ Before starting significant refactoring
+- ✅ After a PR is merged (to get the merged changes)
+- ✅ When you've been away from the project for a while
+- ✅ If you see "Your branch is behind" messages
+
+### Enforcement
+
+**Agents that start work without pulling latest changes risk:**
+- Creating merge conflicts
+- Duplicating work that was already done
+- Breaking recently merged features
+- Wasting time on outdated code
+
+**ALWAYS CHECK**: Before making any changes, run `git fetch origin main` and verify you're up to date.
+
+---
+
 ## 🚨 CRITICAL: MANDATORY Unit Test Structure
 
 ### Core Rule: Test-Driven Development
