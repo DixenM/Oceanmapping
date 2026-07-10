@@ -2,17 +2,28 @@
 
 A comprehensive web application combining real-time tide tracking and marine weather forecasting for Danish coastal stations. Built with React, TypeScript, and modern web technologies.
 
-<<<<<<< HEAD
 > **🧪 Test-First Development**: This project enforces mandatory unit testing for all code. See [Contributing Guidelines](CONTRIBUTING.md) and [.cursorrules](.cursorrules) for testing requirements.
 
 ## ✨ Features
 
-### 🌊 Marine Weather Overlay
-=======
-## ✨ Features
+### 🌊 Ocean Depth Visualization (NEW!)
+- **Color-Coded Bathymetry** using GEBCO global ocean depth data
+- **86 Numeric Depth Markers** strategically placed across Danish coastal waters
+- **Interactive Depth Points** with detailed popups showing:
+  - Exact depth in meters
+  - Location name
+  - Precise coordinates
+- **Zoom-Based Progressive Loading** for optimal performance
+- **Color-Coded Depth Markers**:
+  - 🟢 Green (0-10m) - Shallow water
+  - 🔵 Teal (10-25m) - Medium depth
+  - 🔵 Sky Blue (25-50m) - Deep
+  - 🔵 Blue (50m+) - Very deep
+- **Comprehensive Legend** explaining colors and usage
+- **localStorage Persistence** - remembers your preference
+- **Coverage**: Bønnerup Havn, Copenhagen, Aarhus, Esbjerg, Skagen, and 50+ more locations
 
-### 🌊 Marine Weather Overlay (NEW!)
->>>>>>> origin/main
+### 🌊 Marine Weather Overlay
 - **Real-time Marine Weather Data** from Open-Meteo Marine API (free, no API key needed)
 - **Wave Height Visualization** with color-coded markers
 - **Wind Speed & Direction** with compass indicators and directional arrows
@@ -75,7 +86,6 @@ npm run dev
 
 5. Open your browser to `http://localhost:3000`
 
-<<<<<<< HEAD
 ## 🧪 Testing
 
 This project uses [Vitest](https://vitest.dev/) for unit testing - a blazing fast test runner built on Vite.
@@ -147,10 +157,7 @@ npm run preview
 - **React 18** - UI framework
 - **TypeScript** - Type safety and developer experience
 - **Vite** - Build tool and dev server
-<<<<<<< HEAD
 - **Vitest** - Unit testing framework
-=======
->>>>>>> origin/main
 - **Leaflet** - Interactive maps
 - **React Leaflet** - React components for Leaflet
 - **WorldTides API** - Real-time tide data
