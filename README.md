@@ -142,9 +142,6 @@ describe('MyModule', () => {
 ```
 
 **⚠️ IMPORTANT**: All new code must include corresponding unit tests. See `.cursorrules` and `CONTRIBUTING.md` for full testing requirements.
-
-=======
->>>>>>> origin/main
 ## 🏗️ Building for Production
 
 ```bash
@@ -162,6 +159,7 @@ npm run preview
 - **React Leaflet** - React components for Leaflet
 - **WorldTides API** - Real-time tide data
 - **Open-Meteo Marine API** - Free marine weather data
+- **OpenSeaMap** - Free nautical chart tiles with bathymetry
 
 ## 📍 Covered Stations
 
@@ -214,6 +212,12 @@ The app includes 15+ Danish coastal stations with accurate coordinates:
 4. **View Forecast**: See 24-hour wave and wind predictions
 5. **Expand Details**: Click station name for full information
 
+### Ocean Depth / Bathymetry
+1. **Toggle Depth Layer**: Click the "Depth" button in the bottom-right corner
+2. **View Nautical Information**: See depth contours, buoys, and navigation aids
+3. **Plan Navigation**: Use bathymetric data for safe route planning
+4. **Performance**: Toggle off when not needed to improve map performance
+
 ## 🎨 Color-Coded Status Indicators
 
 ### Tide Status
@@ -240,6 +244,7 @@ oceanmapping/
 │   │   ├── LocationButton.tsx
 │   │   ├── StationList.tsx
 │   │   ├── TideInfoPopup.tsx
+│   │   ├── BathymetryLayerControl.tsx  # Ocean depth layer toggle
 │   │   ├── Map.jsx                 # Marine weather map
 │   │   ├── TideBottomSheet.jsx     # Marine weather bottom sheet
 │   │   └── StationDetail.jsx       # Marine weather detail view
@@ -263,7 +268,8 @@ oceanmapping/
 │   │   ├── SearchBar.css
 │   │   ├── LocationButton.css
 │   │   ├── StationList.css
-│   │   └── TideInfoPopup.css
+│   │   ├── TideInfoPopup.css
+│   │   └── BathymetryLayerControl.css
 │   ├── App.tsx          # Main app component (TypeScript)
 │   ├── App.jsx          # Marine weather app (JavaScript)
 │   ├── main.tsx         # App entry point
@@ -322,6 +328,12 @@ The app is fully optimized for mobile devices with:
 - **Data**: Wave height, wave direction, wind speed, wind direction, swell
 - **Documentation**: https://open-meteo.com/en/docs/marine-weather-api
 
+### OpenSeaMap (for Bathymetry)
+- **Tiles**: `https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png`
+- **No API key required** - free community-driven project!
+- **Features**: Depth contours, buoys, lighthouses, navigation aids
+- **Documentation**: http://www.openseamap.org
+
 ## 🎨 Features in Detail
 
 ### Marine Weather Bottom Sheet
@@ -337,6 +349,14 @@ The app is fully optimized for mobile devices with:
 - Color-coded circular markers on map
 - Wave height displayed on each marker
 - Updates in real-time with current conditions
+
+### Bathymetry Layer
+- Toggle button in bottom-right corner
+- OpenSeaMap nautical chart overlay
+- Depth contours and underwater topography
+- Navigation aids (buoys, lighthouses, beacons)
+- Optional layer to preserve performance
+- 70% opacity for easy viewing with base map
 
 ### Search & Navigation
 - Real-time autocomplete suggestions
@@ -400,21 +420,11 @@ See [.cursorrules](.cursorrules) for AI-assisted development guidelines.
 
 MIT
 
-<<<<<<< HEAD
-=======
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
->>>>>>> origin/main
 ## 🙏 Acknowledgments
 
 - OpenStreetMap contributors for map tiles
 - WorldTides for tide prediction API
 - Open-Meteo for free marine weather API
+- OpenSeaMap for nautical charts and bathymetry data
 - Danish coastal monitoring stations
-<<<<<<< HEAD
 - The React, TypeScript, Vite, and Vitest communities
-=======
-- The React, TypeScript, and Vite communities
->>>>>>> origin/main
