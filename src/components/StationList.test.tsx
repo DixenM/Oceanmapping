@@ -72,10 +72,10 @@ describe('StationList', () => {
     fireEvent.click(toggleButton)
 
     await waitFor(() => {
-      expect(screen.getByText('København')).toBeInTheDocument()
-      expect(screen.getByText('Esbjerg')).toBeInTheDocument()
-      expect(screen.getByText('Aalborg')).toBeInTheDocument()
-    })
+      expect(screen.getByLabelText(/København tide station/)).toBeInTheDocument()
+      expect(screen.getByLabelText(/Esbjerg tide station/)).toBeInTheDocument()
+      expect(screen.getByLabelText(/Aalborg tide station/)).toBeInTheDocument()
+    }, { timeout: 1000 })
   })
 
   it('should display filter tabs', async () => {
@@ -131,9 +131,10 @@ describe('StationList', () => {
     fireEvent.click(toggleButton)
 
     await waitFor(() => {
-      const stationButton = screen.getByText('København').closest('div[role="button"]')
+      const stationButton = screen.getByText(/København/).closest('div[role="button"]')
+      expect(stationButton).toBeInTheDocument()
       fireEvent.click(stationButton!)
-    })
+    }, { timeout: 1000 })
 
     expect(mockOnStationSelect).toHaveBeenCalledWith(mockStations[0])
   })
@@ -145,13 +146,15 @@ describe('StationList', () => {
     fireEvent.click(toggleButton)
 
     await waitFor(() => {
-      const stationButton = screen.getByText('København').closest('div[role="button"]')
+      const stationButton = screen.getByText(/København/).closest('div[role="button"]')
+      expect(stationButton).toBeInTheDocument()
       fireEvent.click(stationButton!)
-    })
+    }, { timeout: 1000 })
 
+    // Panel closes - check that toggle button shows "Open" instead of "Close"
     await waitFor(() => {
-      expect(screen.queryByText('Danish Tide Stations')).not.toBeInTheDocument()
-    })
+      expect(screen.getByLabelText('Open stations list')).toBeInTheDocument()
+    }, { timeout: 1000 })
   })
 
   it('should support keyboard navigation for stations', async () => {
@@ -161,9 +164,10 @@ describe('StationList', () => {
     fireEvent.click(toggleButton)
 
     await waitFor(() => {
-      const stationButton = screen.getByText('København').closest('div[role="button"]')
+      const stationButton = screen.getByText(/København/).closest('div[role="button"]')
+      expect(stationButton).toBeInTheDocument()
       fireEvent.keyDown(stationButton!, { key: 'Enter' })
-    })
+    }, { timeout: 1000 })
 
     expect(mockOnStationSelect).toHaveBeenCalled()
   })

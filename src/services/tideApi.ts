@@ -24,9 +24,16 @@ export const fetchTideData = async (
     const startTimestamp = Math.floor(now.getTime() / 1000) - 86400 // 24 hours ago
     const lengthSeconds = 86400 * 2 // 48 hours
 
+    // Create AbortController for timeout
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
+
     const response = await fetch(
-      `${API_BASE_URL}?extremes&heights&lat=${iLatitude}&lon=${iLongitude}&start=${startTimestamp}&length=${lengthSeconds}&key=${WORLDTIDES_API_KEY}`
+      `${API_BASE_URL}?extremes&heights&lat=${iLatitude}&lon=${iLongitude}&start=${startTimestamp}&length=${lengthSeconds}&key=${WORLDTIDES_API_KEY}`,
+      { signal: controller.signal }
     )
+
+    clearTimeout(timeoutId)
 
     if (!response.ok) {
       throw new Error(`WorldTides API error: ${response.status}`)
@@ -60,6 +67,11 @@ export const fetchTideData = async (
 
     return oTideData
   } catch (error) {
+    // Handle timeout errors specifically
+    if (error instanceof Error && error.name === 'AbortError') {
+      logError('Request timeout: WorldTides API took longer than 10 seconds', error)
+      throw new Error('Request timeout - please try again')
+    }
     logError('Error fetching tide data from WorldTides API', error)
     throw error
   }
