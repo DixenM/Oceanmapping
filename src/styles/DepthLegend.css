@@ -1,0 +1,168 @@
+/**
+ * DepthLegend Styles
+ * 
+ * Purpose: Styling for comprehensive depth legend
+ * Shows both marker colors and bathymetry shading
+ */
+
+.depth-legend {
+  position: absolute;
+  bottom: 3rem;
+  left: 0.75rem;
+  background: white;
+  border-radius: 8px;
+  padding: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  z-index: 400;
+  min-width: 160px;
+  max-width: 200px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.legend-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.75rem;
+  text-align: center;
+  border-bottom: 2px solid #0ea5e9;
+  padding-bottom: 0.5rem;
+}
+
+.legend-section {
+  margin-bottom: 0.75rem;
+}
+
+.legend-section-title {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.legend-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.legend-marker {
+  min-width: 32px;
+  padding: 2px 4px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
+
+.legend-label {
+  font-size: 0.6875rem;
+  color: #475569;
+  font-weight: 500;
+}
+
+.legend-gradient {
+  margin-top: 0.5rem;
+}
+
+.gradient-bar {
+  height: 16px;
+  border-radius: 8px;
+  background: linear-gradient(to right, 
+    #86efac 0%,
+    #6ee7b7 20%,
+    #5eead4 40%,
+    #7dd3fc 60%,
+    #60a5fa 80%,
+    #3b82f6 100%
+  );
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.gradient-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.25rem;
+  font-size: 0.625rem;
+  color: #64748b;
+  font-style: italic;
+}
+
+.legend-note {
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e2e8f0;
+  font-size: 0.625rem;
+  color: #64748b;
+  text-align: center;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .depth-legend {
+    bottom: 2.5rem;
+    left: 0.5rem;
+    padding: 0.625rem;
+    min-width: 140px;
+  }
+
+  .legend-title {
+    font-size: 0.75rem;
+  }
+
+  .legend-section-title {
+    font-size: 0.625rem;
+  }
+
+  .legend-marker {
+    min-width: 28px;
+    font-size: 9px;
+  }
+
+  .legend-label {
+    font-size: 0.625rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .depth-legend {
+    bottom: 2rem;
+    left: 0.375rem;
+    padding: 0.5rem;
+    min-width: 130px;
+  }
+
+  .legend-title {
+    font-size: 0.6875rem;
+    padding-bottom: 0.375rem;
+  }
+
+  .legend-section {
+    margin-bottom: 0.5rem;
+  }
+
+  .legend-marker {
+    min-width: 26px;
+    font-size: 8px;
+  }
+
+  .legend-label {
+    font-size: 0.5625rem;
+  }
+
+  .legend-note {
+    font-size: 0.5625rem;
+  }
+}

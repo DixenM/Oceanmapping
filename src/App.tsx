@@ -5,7 +5,7 @@ import { SearchBar } from './components/SearchBar'
 import { LocationButton } from './components/LocationButton'
 import { StationList } from './components/StationList'
 import { TideInfoPopup } from './components/TideInfoPopup'
-import { BathymetryLayerControl } from './components/BathymetryLayerControl'
+import { OceanDepthControl } from './components/OceanDepthControl'
 import { danishTideStations } from './data/stations'
 import { TideStation } from './types'
 import './styles/App.css'
@@ -148,8 +148,8 @@ const App: React.FC = () => {
           
           <MapController iCenter={mapCenter} iZoom={mapZoom} />
 
-          {/* Bathymetry/Ocean Depth Layer Control */}
-          <BathymetryLayerControl iDefaultEnabled={false} />
+          {/* Ocean Depth Visualization with Color Shading + Numeric Markers */}
+          <OceanDepthControl iDefaultEnabled={false} />
 
           {danishTideStations.map(station => (
             <Marker

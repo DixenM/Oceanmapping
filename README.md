@@ -6,13 +6,22 @@ A comprehensive web application combining real-time tide tracking and marine wea
 
 ## ✨ Features
 
-### 🗺️ Ocean Depth / Bathymetry Layer (NEW!)
-- **Toggleable Nautical Charts** with depth contours and bathymetric information
-- **OpenSeaMap Integration** providing free nautical chart overlays
-- **Optional Layer** (default off) to conserve bandwidth and improve performance
-- **Mobile-Optimized Toggle Control** positioned in the map corner for easy access
-- **Depth Contours** showing underwater topography and navigation aids
-- **Seamark Overlay** with buoys, lighthouses, and other nautical features
+### 🌊 Ocean Depth Visualization (NEW!)
+- **Color-Coded Bathymetry** using GEBCO global ocean depth data
+- **86 Numeric Depth Markers** strategically placed across Danish coastal waters
+- **Interactive Depth Points** with detailed popups showing:
+  - Exact depth in meters
+  - Location name
+  - Precise coordinates
+- **Zoom-Based Progressive Loading** for optimal performance
+- **Color-Coded Depth Markers**:
+  - 🟢 Green (0-10m) - Shallow water
+  - 🔵 Teal (10-25m) - Medium depth
+  - 🔵 Sky Blue (25-50m) - Deep
+  - 🔵 Blue (50m+) - Very deep
+- **Comprehensive Legend** explaining colors and usage
+- **localStorage Persistence** - remembers your preference
+- **Coverage**: Bønnerup Havn, Copenhagen, Aarhus, Esbjerg, Skagen, and 50+ more locations
 
 ### 🌊 Marine Weather Overlay
 - **Real-time Marine Weather Data** from Open-Meteo Marine API (free, no API key needed)
@@ -395,6 +404,7 @@ Please read our [Contributing Guidelines](CONTRIBUTING.md) for detailed informat
 See [.cursorrules](.cursorrules) for AI-assisted development guidelines.
 
 **Note**: Pull requests without tests will not be accepted.
+
 ## 🚀 Future Enhancements
 
 - Integration with DMI (Danish Meteorological Institute)
