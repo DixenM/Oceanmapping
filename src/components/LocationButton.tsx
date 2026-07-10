@@ -1,66 +1,84 @@
-import React, { useState, useCallback } from 'react'
+import React from 'react'
 import { TideStation } from '../types'
-import { findNearestStation } from '../utils/helpers'
+import { useNearestStation } from '../hooks/useNearestStation'
 import '../styles/LocationButton.css'
 
+/**
+ * LocationButton component props
+ */
 interface LocationButtonProps {
-  stations: TideStation[]
-  onLocationFound: (station: TideStation) => void
+  iStations: TideStation[]
+  iOnLocationFound: (iStation: TideStation) => void
 }
 
+/**
+ * LocationButton component - GPS location finder for nearest tide station
+ * 
+ * Purpose: Uses browser Geolocation API to find user's location and
+ * automatically select the nearest tide monitoring station
+ * 
+ * Features:
+ * - GPS location detection
+ * - Nearest station calculation
+ * - Loading states
+ * - Error handling (permission denied, location unavailable)
+ * - Accessible button
+ * 
+ * @param {LocationButtonProps} props - Component props
+ * @returns {JSX.Element} Location button component
+ */
 export const LocationButton: React.FC<LocationButtonProps> = ({ 
-  stations, 
-  onLocationFound 
+  iStations, 
+  iOnLocationFound 
 }) => {
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const { 
+    nearestStation, 
+    isLoading, 
+    error, 
+    requestLocation 
+  } = useNearestStation(iStations)
 
-  const handleGetLocation = useCallback(() => {
-    if (!navigator.geolocation) {
-      setError('Geolocation not supported')
-      return
+  /**
+   * Handles location button click
+   * 
+   * Purpose: Request user location and find nearest station
+   * 
+   * @returns {void}
+   */
+  const handleClick = (): void => {
+    requestLocation()
+  }
+
+  // Notify parent when nearest station is found
+  React.useEffect(() => {
+    if (nearestStation) {
+      iOnLocationFound(nearestStation)
     }
-
-    setLoading(true)
-    setError(null)
-
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        const { latitude, longitude } = position.coords
-        const nearest = findNearestStation(latitude, longitude, stations)
-        
-        if (nearest) {
-          onLocationFound(nearest)
-        } else {
-          setError('No nearby station found')
-        }
-        
-        setLoading(false)
-      },
-      error => {
-        setError('Location access denied')
-        setLoading(false)
-        console.error('Geolocation error:', error)
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0
-      }
-    )
-  }, [stations, onLocationFound])
+  }, [nearestStation, iOnLocationFound])
 
   return (
     <div className="location-button-container">
       <button
-        onClick={handleGetLocation}
-        disabled={loading}
-        className="location-button"
-        title="Find nearest station"
+        onClick={handleClick}
+        disabled={isLoading}
+        className={`location-button ${isLoading ? 'loading' : ''}`}
+        aria-label="Find nearest tide station"
+        title="Use GPS to find nearest station"
       >
-        {loading ? '⌛' : '📍'}
+        {isLoading ? '⌛' : '📍'}
       </button>
-      {error && <div className="location-error">{error}</div>}
+      
+      {error && (
+        <div className="location-error" role="alert">
+          {error}
+        </div>
+      )}
+      
+      {nearestStation && !error && (
+        <div className="location-success" role="status">
+          ✓ Found: {nearestStation.name}
+        </div>
+      )}
     </div>
   )
 }

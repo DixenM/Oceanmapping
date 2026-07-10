@@ -1,28 +1,41 @@
 import { TideInfo, TideData, TideStatus } from '../types'
+import { logError } from '../utils/logger'
 
 const WORLDTIDES_API_KEY = import.meta.env.VITE_WORLDTIDES_API_KEY || 'demo'
 const API_BASE_URL = 'https://www.worldtides.info/api/v3'
 
+/**
+ * Fetches tide data for a given geographic location from WorldTides API
+ * 
+ * Purpose: Retrieves current tide height, upcoming extremes (high/low tides), 
+ * and calculates tide status (rising/falling) for tide monitoring stations
+ * 
+ * @param {number} iLatitude - Location latitude (-90 to 90)
+ * @param {number} iLongitude - Location longitude (-180 to 180)
+ * @returns {Promise<TideInfo>} oTideData - Complete tide information including current height, extremes, and status
+ * @throws {Error} When API request fails or returns invalid data
+ */
 export const fetchTideData = async (
-  latitude: number,
-  longitude: number
+  iLatitude: number,
+  iLongitude: number
 ): Promise<TideInfo> => {
   try {
     const now = new Date()
-    const start = Math.floor(now.getTime() / 1000) - 86400
+    const startTimestamp = Math.floor(now.getTime() / 1000) - 86400 // 24 hours ago
+    const lengthSeconds = 86400 * 2 // 48 hours
 
     const response = await fetch(
-      `${API_BASE_URL}?extremes&heights&lat=${latitude}&lon=${longitude}&start=${start}&length=${86400 * 2}&key=${WORLDTIDES_API_KEY}`
+      `${API_BASE_URL}?extremes&heights&lat=${iLatitude}&lon=${iLongitude}&start=${startTimestamp}&length=${lengthSeconds}&key=${WORLDTIDES_API_KEY}`
     )
 
     if (!response.ok) {
-      throw new Error(`API error: ${response.status}`)
+      throw new Error(`WorldTides API error: ${response.status}`)
     }
 
     const data = await response.json()
 
     if (!data.extremes || data.extremes.length === 0) {
-      throw new Error('No tide data available')
+      throw new Error('No tide extremes data available from API')
     }
 
     const currentHeight = data.heights?.[0]?.height || 0
@@ -34,94 +47,123 @@ export const fetchTideData = async (
       type: extreme.type === 'High' ? 'High' : 'Low'
     }))
 
-    const status = calculateTideStatus(currentHeight, extremes, currentTime)
+    const status = calculateTideStatus(extremes, currentTime)
 
-    return {
+    const oTideData: TideInfo = {
       current: {
         height: currentHeight,
         time: currentTime
       },
-      extremes: extremes.slice(0, 6),
+      extremes: extremes.slice(0, 6), // Next 6 extremes
       status
     }
+
+    return oTideData
   } catch (error) {
-    console.error('Error fetching tide data:', error)
+    logError('Error fetching tide data from WorldTides API', error)
     throw error
   }
 }
 
+/**
+ * Calculates current tide status based on tide height and extremes
+ * 
+ * Purpose: Determine if tide is rising, falling, at high tide, or at low tide
+ * Used for visual indicators and user information
+ * 
+ * @param {TideData[]} iExtremes - Array of upcoming tide extremes
+ * @param {string} iCurrentTime - Current time as ISO string
+ * @returns {TideStatus} oStatus - Tide status with state, message, color, and icon
+ */
 const calculateTideStatus = (
-  _currentHeight: number,
-  extremes: TideData[],
-  currentTime: string
+  iExtremes: TideData[],
+  iCurrentTime: string
 ): TideStatus => {
-  if (extremes.length < 2) {
-    return {
+  // Default status if insufficient data
+  if (iExtremes.length < 2) {
+    const oStatus: TideStatus = {
       state: 'rising',
       message: 'Data unavailable',
       color: '#6b7280',
       icon: '〰️'
     }
+    return oStatus
   }
 
-  const current = new Date(currentTime).getTime()
+  const currentTimestamp = new Date(iCurrentTime).getTime()
   
   let prevExtreme: TideData | null = null
   let nextExtreme: TideData | null = null
 
-  for (let i = 0; i < extremes.length - 1; i++) {
-    const extremeTime = new Date(extremes[i].time).getTime()
-    const nextExtremeTime = new Date(extremes[i + 1].time).getTime()
+  // Find the two extremes surrounding current time
+  for (let i = 0; i < iExtremes.length - 1; i++) {
+    const extremeTime = new Date(iExtremes[i].time).getTime()
+    const nextExtremeTime = new Date(iExtremes[i + 1].time).getTime()
 
-    if (extremeTime <= current && current <= nextExtremeTime) {
-      prevExtreme = extremes[i]
-      nextExtreme = extremes[i + 1]
+    if (extremeTime <= currentTimestamp && currentTimestamp <= nextExtremeTime) {
+      prevExtreme = iExtremes[i]
+      nextExtreme = iExtremes[i + 1]
       break
     }
   }
 
+  // If we can't determine position between extremes
   if (!prevExtreme || !nextExtreme) {
-    return {
+    const oStatus: TideStatus = {
       state: 'rising',
       message: 'Calculating...',
       color: '#6b7280',
       icon: '〰️'
     }
+    return oStatus
   }
 
   const prevTime = new Date(prevExtreme.time).getTime()
   const nextTime = new Date(nextExtreme.time).getTime()
-  const progress = (current - prevTime) / (nextTime - prevTime)
+  const progress = (currentTimestamp - prevTime) / (nextTime - prevTime)
 
+  let oStatus: TideStatus
+
+  // Determine if we're between low->high (rising) or high->low (falling)
   if (prevExtreme.type === 'Low' && nextExtreme.type === 'High') {
+    // Rising tide
     if (progress < 0.15) {
-      return {
+      // Very close to low tide
+      oStatus = {
         state: 'low',
         message: 'Low Tide',
         color: '#ef4444',
         icon: '⬇️'
       }
-    }
-    return {
-      state: 'rising',
-      message: 'Rising',
-      color: '#3b82f6',
-      icon: '↗️'
+    } else {
+      // Rising
+      oStatus = {
+        state: 'rising',
+        message: 'Rising',
+        color: '#3b82f6',
+        icon: '↗️'
+      }
     }
   } else {
+    // Falling tide (high->low)
     if (progress < 0.15) {
-      return {
+      // Very close to high tide
+      oStatus = {
         state: 'high',
         message: 'High Tide',
         color: '#10b981',
         icon: '⬆️'
       }
-    }
-    return {
-      state: 'falling',
-      message: 'Falling',
-      color: '#f59e0b',
-      icon: '↘️'
+    } else {
+      // Falling
+      oStatus = {
+        state: 'falling',
+        message: 'Falling',
+        color: '#f59e0b',
+        icon: '↘️'
+      }
     }
   }
+
+  return oStatus
 }

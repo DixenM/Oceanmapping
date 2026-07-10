@@ -3,24 +3,52 @@ import { danishTideStations } from '../data/stations'
 import { TideStation } from '../types'
 import '../styles/SearchBar.css'
 
+/**
+ * SearchBar component props
+ */
 interface SearchBarProps {
-  onStationSelect: (station: TideStation) => void
+  iOnStationSelect: (iStation: TideStation) => void
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ onStationSelect }) => {
+/**
+ * SearchBar component - Live search and filter for tide stations
+ * 
+ * Purpose: Allows users to quickly find tide stations by name, city, or region
+ * Features live filtering and autocomplete suggestions
+ * 
+ * Features:
+ * - Live search as you type
+ * - Filters by name, city, and region
+ * - Autocomplete dropdown
+ * - Clear button
+ * - Keyboard accessible
+ * 
+ * @param {SearchBarProps} props - Component props
+ * @returns {JSX.Element} Search bar component
+ */
+export const SearchBar: React.FC<SearchBarProps> = ({ iOnStationSelect }) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [suggestions, setSuggestions] = useState<TideStation[]>([])
   const [showSuggestions, setShowSuggestions] = useState(false)
 
-  const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value
+  /**
+   * Handles search input changes and filters stations
+   * 
+   * Purpose: Update suggestions based on user input
+   * 
+   * @param {React.ChangeEvent<HTMLInputElement>} iEvent - Input change event
+   * @returns {void}
+   */
+  const handleSearchChange = useCallback((iEvent: React.ChangeEvent<HTMLInputElement>) => {
+    const value = iEvent.target.value
     setSearchTerm(value)
 
     if (value.length > 0) {
+      const lowerValue = value.toLowerCase()
       const filtered = danishTideStations.filter(station =>
-        station.name.toLowerCase().includes(value.toLowerCase()) ||
-        station.city.toLowerCase().includes(value.toLowerCase()) ||
-        station.region.toLowerCase().includes(value.toLowerCase())
+        station.name.toLowerCase().includes(lowerValue) ||
+        station.city.toLowerCase().includes(lowerValue) ||
+        station.region.toLowerCase().includes(lowerValue)
       )
       setSuggestions(filtered)
       setShowSuggestions(true)
@@ -30,12 +58,27 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onStationSelect }) => {
     }
   }, [])
 
-  const handleSelectStation = useCallback((station: TideStation) => {
-    setSearchTerm(station.name)
+  /**
+   * Handles station selection from suggestions
+   * 
+   * Purpose: Select a station and notify parent component
+   * 
+   * @param {TideStation} iStation - Selected station
+   * @returns {void}
+   */
+  const handleSelectStation = useCallback((iStation: TideStation) => {
+    setSearchTerm(iStation.name)
     setShowSuggestions(false)
-    onStationSelect(station)
-  }, [onStationSelect])
+    iOnStationSelect(iStation)
+  }, [iOnStationSelect])
 
+  /**
+   * Clears the search input and suggestions
+   * 
+   * Purpose: Reset search state
+   * 
+   * @returns {void}
+   */
   const handleClear = useCallback(() => {
     setSearchTerm('')
     setSuggestions([])
@@ -45,7 +88,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onStationSelect }) => {
   return (
     <div className="search-bar-container">
       <div className="search-bar">
-        <span className="search-icon">🔍</span>
+        <span className="search-icon" aria-hidden="true">🔍</span>
         <input
           type="text"
           placeholder="Search stations or cities..."
@@ -53,21 +96,30 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onStationSelect }) => {
           onChange={handleSearchChange}
           onFocus={() => searchTerm && setShowSuggestions(true)}
           className="search-input"
+          aria-label="Search tide stations"
         />
         {searchTerm && (
-          <button onClick={handleClear} className="clear-button">
+          <button 
+            onClick={handleClear} 
+            className="clear-button"
+            aria-label="Clear search"
+          >
             ✕
           </button>
         )}
       </div>
       
       {showSuggestions && suggestions.length > 0 && (
-        <div className="suggestions-dropdown">
+        <div className="suggestions-dropdown" role="listbox">
           {suggestions.map(station => (
             <div
               key={station.id}
               className="suggestion-item"
               onClick={() => handleSelectStation(station)}
+              role="option"
+              aria-selected="false"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === 'Enter' && handleSelectStation(station)}
             >
               <div className="suggestion-name">{station.name}</div>
               <div className="suggestion-location">{station.city}, {station.region}</div>
