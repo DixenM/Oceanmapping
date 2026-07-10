@@ -309,6 +309,18 @@ When completing a project or major feature, **ALWAYS** create a `DEVELOPMENT_LOG
 - Don't commit commented-out code
 - Keep commits focused and atomic
 - **Always commit tests with implementation**
+- **Always provide GitHub commit links after pushing**
+  - Format: `https://github.com/{owner}/{repo}/commit/{SHA}`
+  - Include links for all commits in the current session
+  - Also provide PR link if PR was created
+  - Example:
+    ```
+    ✅ Commits pushed:
+    - Fix API error handling: https://github.com/owner/repo/commit/abc123
+    - Add unit tests: https://github.com/owner/repo/commit/def456
+    
+    📦 Pull Request: https://github.com/owner/repo/pull/12
+    ```
 
 ## Progressive Web Apps (PWA)
 
