@@ -52,17 +52,15 @@ export const BathymetryLayerControl: React.FC<BathymetryLayerControlProps> = ({
           data-testid="bathymetry-toggle"
         >
           <svg 
-            width="24" 
-            height="24" 
             viewBox="0 0 24 24" 
             fill="none" 
             stroke="currentColor" 
-            strokeWidth="2"
+            strokeWidth="2.5"
             strokeLinecap="round" 
             strokeLinejoin="round"
           >
-            <path d="M3 12h3m12 0h3M3 18h3m12 0h3M3 6h3m12 0h3" />
-            <circle cx="12" cy="12" r="8" strokeDasharray="2 2" />
+            <path d="M3 9h18M3 15h18" />
+            <circle cx="12" cy="12" r="9" strokeDasharray="3 2" opacity="0.6" />
           </svg>
           <span className="bathymetry-label">Depth</span>
         </button>

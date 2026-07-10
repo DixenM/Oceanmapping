@@ -105,8 +105,8 @@ describe('BathymetryLayerControl', () => {
       const svg = button.querySelector('svg')
       
       expect(svg).toBeInTheDocument()
-      expect(svg).toHaveAttribute('width', '24')
-      expect(svg).toHaveAttribute('height', '24')
+      expect(svg).toHaveAttribute('viewBox', '0 0 24 24')
+      expect(svg).toHaveAttribute('stroke', 'currentColor')
     })
   })
 })
