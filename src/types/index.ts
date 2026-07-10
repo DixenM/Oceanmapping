@@ -28,3 +28,8 @@ export interface TideStatus {
   color: string
   icon: string
 }
+
+export interface FavoriteStation {
+  stationId: string
+  addedAt: number
+}
