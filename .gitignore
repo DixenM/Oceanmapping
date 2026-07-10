@@ -14,11 +14,8 @@ node_modules
 
 # Testing
 /coverage
-<<<<<<< HEAD
 coverage/
 .vitest/
-=======
->>>>>>> origin/main
 
 # Production
 /build
