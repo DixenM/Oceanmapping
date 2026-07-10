@@ -1,6 +1,7 @@
 import React from 'react'
 import { TideStation } from '../types'
 import { useTideData } from '../hooks/useTideData'
+import { useFavorites } from '../hooks/useFavorites'
 import { formatHeight, formatDateTime } from '../utils/helpers'
 import '../styles/TideInfoPopup.css'
 
@@ -38,6 +39,21 @@ export const TideInfoPopup: React.FC<TideInfoPopupProps> = ({
     iStation.longitude
   )
 
+  const { oIsFavorite, oToggleFavorite } = useFavorites()
+
+  /**
+   * Handles favorite button click
+   * 
+   * Purpose: Toggle favorite status for the current station
+   * 
+   * @returns {void}
+   */
+  const handleFavoriteClick = (): void => {
+    oToggleFavorite(iStation.id)
+  }
+
+  const isFavorited = oIsFavorite(iStation.id)
+
   return (
     <div className="tide-info-popup">
       <div className="popup-header">
@@ -45,13 +61,23 @@ export const TideInfoPopup: React.FC<TideInfoPopupProps> = ({
           <h2>{iStation.name}</h2>
           <p className="station-location">{iStation.city}, {iStation.region}</p>
         </div>
-        <button 
-          onClick={iOnClose} 
-          className="close-button"
-          aria-label="Close tide information"
-        >
-          ✕
-        </button>
+        <div className="popup-header-actions">
+          <button
+            onClick={handleFavoriteClick}
+            className={`favorite-button ${isFavorited ? 'favorited' : ''}`}
+            aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
+            title={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
+          >
+            {isFavorited ? '♥' : '♡'}
+          </button>
+          <button 
+            onClick={iOnClose} 
+            className="close-button"
+            aria-label="Close tide information"
+          >
+            ✕
+          </button>
+        </div>
       </div>
 
       {loading && (
