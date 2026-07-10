@@ -2,17 +2,19 @@
 
 A comprehensive web application combining real-time tide tracking and marine weather forecasting for Danish coastal stations. Built with React, TypeScript, and modern web technologies.
 
-<<<<<<< HEAD
 > **🧪 Test-First Development**: This project enforces mandatory unit testing for all code. See [Contributing Guidelines](CONTRIBUTING.md) and [.cursorrules](.cursorrules) for testing requirements.
 
 ## ✨ Features
 
-### 🌊 Marine Weather Overlay
-=======
-## ✨ Features
+### 🗺️ Ocean Depth / Bathymetry Layer (NEW!)
+- **Toggleable Nautical Charts** with depth contours and bathymetric information
+- **OpenSeaMap Integration** providing free nautical chart overlays
+- **Optional Layer** (default off) to conserve bandwidth and improve performance
+- **Mobile-Optimized Toggle Control** positioned in the map corner for easy access
+- **Depth Contours** showing underwater topography and navigation aids
+- **Seamark Overlay** with buoys, lighthouses, and other nautical features
 
-### 🌊 Marine Weather Overlay (NEW!)
->>>>>>> origin/main
+### 🌊 Marine Weather Overlay
 - **Real-time Marine Weather Data** from Open-Meteo Marine API (free, no API key needed)
 - **Wave Height Visualization** with color-coded markers
 - **Wind Speed & Direction** with compass indicators and directional arrows
@@ -75,7 +77,6 @@ npm run dev
 
 5. Open your browser to `http://localhost:3000`
 
-<<<<<<< HEAD
 ## 🧪 Testing
 
 This project uses [Vitest](https://vitest.dev/) for unit testing - a blazing fast test runner built on Vite.
@@ -132,9 +133,6 @@ describe('MyModule', () => {
 ```
 
 **⚠️ IMPORTANT**: All new code must include corresponding unit tests. See `.cursorrules` and `CONTRIBUTING.md` for full testing requirements.
-
-=======
->>>>>>> origin/main
 ## 🏗️ Building for Production
 
 ```bash
@@ -147,14 +145,12 @@ npm run preview
 - **React 18** - UI framework
 - **TypeScript** - Type safety and developer experience
 - **Vite** - Build tool and dev server
-<<<<<<< HEAD
 - **Vitest** - Unit testing framework
-=======
->>>>>>> origin/main
 - **Leaflet** - Interactive maps
 - **React Leaflet** - React components for Leaflet
 - **WorldTides API** - Real-time tide data
 - **Open-Meteo Marine API** - Free marine weather data
+- **OpenSeaMap** - Free nautical chart tiles with bathymetry
 
 ## 📍 Covered Stations
 
@@ -207,6 +203,12 @@ The app includes 15+ Danish coastal stations with accurate coordinates:
 4. **View Forecast**: See 24-hour wave and wind predictions
 5. **Expand Details**: Click station name for full information
 
+### Ocean Depth / Bathymetry
+1. **Toggle Depth Layer**: Click the "Depth" button in the bottom-right corner
+2. **View Nautical Information**: See depth contours, buoys, and navigation aids
+3. **Plan Navigation**: Use bathymetric data for safe route planning
+4. **Performance**: Toggle off when not needed to improve map performance
+
 ## 🎨 Color-Coded Status Indicators
 
 ### Tide Status
@@ -233,6 +235,7 @@ oceanmapping/
 │   │   ├── LocationButton.tsx
 │   │   ├── StationList.tsx
 │   │   ├── TideInfoPopup.tsx
+│   │   ├── BathymetryLayerControl.tsx  # Ocean depth layer toggle
 │   │   ├── Map.jsx                 # Marine weather map
 │   │   ├── TideBottomSheet.jsx     # Marine weather bottom sheet
 │   │   └── StationDetail.jsx       # Marine weather detail view
@@ -244,7 +247,6 @@ oceanmapping/
 │   │   └── tideService.js
 │   ├── types/           # TypeScript types
 │   │   └── index.ts
-<<<<<<< HEAD
 │   ├── utils/           # Utility functions with tests
 │   │   ├── calculator.js
 │   │   ├── calculator.test.js
@@ -252,24 +254,20 @@ oceanmapping/
 │   ├── ocean/           # Ocean-specific utilities with tests
 │   │   ├── coordinates.js
 │   │   └── coordinates.test.js
-=======
->>>>>>> origin/main
 │   ├── styles/          # CSS modules
 │   │   ├── App.css
 │   │   ├── SearchBar.css
 │   │   ├── LocationButton.css
 │   │   ├── StationList.css
-│   │   └── TideInfoPopup.css
+│   │   ├── TideInfoPopup.css
+│   │   └── BathymetryLayerControl.css
 │   ├── App.tsx          # Main app component (TypeScript)
 │   ├── App.jsx          # Marine weather app (JavaScript)
 │   ├── main.tsx         # App entry point
 │   └── vite-env.d.ts
 ├── test/                # Test suites
 │   └── testMarineWeatherService.js
-<<<<<<< HEAD
 ├── vitest.config.js     # Vitest configuration
-=======
->>>>>>> origin/main
 ├── index.html
 ├── vite.config.ts
 ├── tsconfig.json
@@ -291,16 +289,11 @@ npm run preview
 # Run linter
 npm run lint
 
-<<<<<<< HEAD
 # Run all tests
 npm test
 
 # Run with coverage
 npm run test:coverage
-=======
-# Run marine weather tests
-npm test
->>>>>>> origin/main
 ```
 
 ## 📱 Mobile Experience
@@ -326,6 +319,12 @@ The app is fully optimized for mobile devices with:
 - **Data**: Wave height, wave direction, wind speed, wind direction, swell
 - **Documentation**: https://open-meteo.com/en/docs/marine-weather-api
 
+### OpenSeaMap (for Bathymetry)
+- **Tiles**: `https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png`
+- **No API key required** - free community-driven project!
+- **Features**: Depth contours, buoys, lighthouses, navigation aids
+- **Documentation**: http://www.openseamap.org
+
 ## 🎨 Features in Detail
 
 ### Marine Weather Bottom Sheet
@@ -342,6 +341,14 @@ The app is fully optimized for mobile devices with:
 - Wave height displayed on each marker
 - Updates in real-time with current conditions
 
+### Bathymetry Layer
+- Toggle button in bottom-right corner
+- OpenSeaMap nautical chart overlay
+- Depth contours and underwater topography
+- Navigation aids (buoys, lighthouses, beacons)
+- Optional layer to preserve performance
+- 70% opacity for easy viewing with base map
+
 ### Search & Navigation
 - Real-time autocomplete suggestions
 - Search by station name, city, or region
@@ -355,7 +362,6 @@ The app is fully optimized for mobile devices with:
 - Recommended actions
 - Historical context for conditions
 
-<<<<<<< HEAD
 ## 🎯 Testing Best Practices
 
 1. **Test file naming**: Use `.test.js` or `.test.ts` suffix
@@ -389,9 +395,6 @@ Please read our [Contributing Guidelines](CONTRIBUTING.md) for detailed informat
 See [.cursorrules](.cursorrules) for AI-assisted development guidelines.
 
 **Note**: Pull requests without tests will not be accepted.
-
-=======
->>>>>>> origin/main
 ## 🚀 Future Enhancements
 
 - Integration with DMI (Danish Meteorological Institute)
@@ -407,21 +410,11 @@ See [.cursorrules](.cursorrules) for AI-assisted development guidelines.
 
 MIT
 
-<<<<<<< HEAD
-=======
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
->>>>>>> origin/main
 ## 🙏 Acknowledgments
 
 - OpenStreetMap contributors for map tiles
 - WorldTides for tide prediction API
 - Open-Meteo for free marine weather API
+- OpenSeaMap for nautical charts and bathymetry data
 - Danish coastal monitoring stations
-<<<<<<< HEAD
 - The React, TypeScript, Vite, and Vitest communities
-=======
-- The React, TypeScript, and Vite communities
->>>>>>> origin/main
