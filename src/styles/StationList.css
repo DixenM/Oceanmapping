@@ -227,6 +227,12 @@
   background-color: #f1f5f9;
 }
 
+.station-item:focus-visible {
+  outline: 3px solid var(--primary-color);
+  outline-offset: -3px;
+  background-color: #f0f9ff;
+}
+
 .station-item.favorited {
   background-color: #fef2f2;
 }
