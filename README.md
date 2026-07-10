@@ -251,7 +251,6 @@ oceanmapping/
 │   │   └── tideService.js
 │   ├── types/           # TypeScript types
 │   │   └── index.ts
-<<<<<<< HEAD
 │   ├── utils/           # Utility functions with tests
 │   │   ├── calculator.js
 │   │   ├── calculator.test.js
@@ -259,8 +258,6 @@ oceanmapping/
 │   ├── ocean/           # Ocean-specific utilities with tests
 │   │   ├── coordinates.js
 │   │   └── coordinates.test.js
-=======
->>>>>>> origin/main
 │   ├── styles/          # CSS modules
 │   │   ├── App.css
 │   │   ├── SearchBar.css
@@ -273,10 +270,7 @@ oceanmapping/
 │   └── vite-env.d.ts
 ├── test/                # Test suites
 │   └── testMarineWeatherService.js
-<<<<<<< HEAD
 ├── vitest.config.js     # Vitest configuration
-=======
->>>>>>> origin/main
 ├── index.html
 ├── vite.config.ts
 ├── tsconfig.json
@@ -298,16 +292,11 @@ npm run preview
 # Run linter
 npm run lint
 
-<<<<<<< HEAD
 # Run all tests
 npm test
 
 # Run with coverage
 npm run test:coverage
-=======
-# Run marine weather tests
-npm test
->>>>>>> origin/main
 ```
 
 ## 📱 Mobile Experience
@@ -362,7 +351,6 @@ The app is fully optimized for mobile devices with:
 - Recommended actions
 - Historical context for conditions
 
-<<<<<<< HEAD
 ## 🎯 Testing Best Practices
 
 1. **Test file naming**: Use `.test.js` or `.test.ts` suffix
@@ -397,8 +385,6 @@ See [.cursorrules](.cursorrules) for AI-assisted development guidelines.
 
 **Note**: Pull requests without tests will not be accepted.
 
-=======
->>>>>>> origin/main
 ## 🚀 Future Enhancements
 
 - Integration with DMI (Danish Meteorological Institute)
