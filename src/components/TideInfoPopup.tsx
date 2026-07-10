@@ -89,7 +89,12 @@ export const TideInfoPopup: React.FC<TideInfoPopupProps> = ({
 
       {error && (
         <div className="popup-error">
-          <p>⚠️ Failed to load tide data. Please try again.</p>
+          <p>⚠️ {error.message || 'Failed to load tide data. Please try again.'}</p>
+          {error.message?.includes('API key') && (
+            <p className="error-hint">
+              Please configure your WorldTides API key in the .env file.
+            </p>
+          )}
         </div>
       )}
 

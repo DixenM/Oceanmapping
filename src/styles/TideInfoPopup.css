@@ -146,6 +146,13 @@
 .popup-error p {
   color: #dc2626;
   font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.popup-error .error-hint {
+  color: #64748b;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
 }
 
 .popup-content {

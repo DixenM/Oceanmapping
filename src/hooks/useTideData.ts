@@ -31,10 +31,27 @@ export const useTideData = (
 ): UseQueryResult<TideInfo, Error> => {
   const oTideQuery = useQuery<TideInfo, Error>({
     queryKey: ['tide', iLatitude, iLongitude],
-    queryFn: () => fetchTideData(iLatitude, iLongitude),
+    queryFn: async () => {
+      if (import.meta.env.DEV) {
+        console.log(`[useTideData] Fetching tide data for lat: ${iLatitude}, lon: ${iLongitude}`)
+      }
+      try {
+        const oData = await fetchTideData(iLatitude, iLongitude)
+        if (import.meta.env.DEV) {
+          console.log('[useTideData] Successfully fetched tide data:', oData)
+        }
+        return oData
+      } catch (error) {
+        if (import.meta.env.DEV) {
+          console.error('[useTideData] Error fetching tide data:', error)
+        }
+        throw error
+      }
+    },
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes (renamed from cacheTime in v5)
     enabled: Boolean(iLatitude && iLongitude), // Only fetch if coordinates are valid
+    retry: 1, // Retry failed requests once
   })
 
   return oTideQuery
